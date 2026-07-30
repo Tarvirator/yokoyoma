@@ -1,4 +1,77 @@
-// ─── CANVAS SETUP ────────────────────────────────────────────────────
+//---- FILES -------------------------------
+const riveFile = "yokoyoma-ch1.riv";
+const lessonTextFile = "lessonsnew.csv";
+const vocabTextFile = "vocab.csv";
+const TOTAL_VOCAB = 43;
+
+// --- LESSON STRUCTURE -----------------------------------------------
+const LAST_LESSON_IDX = 30;
+const SUBLESSONS      = [[5, 3], [9,3],[18,3]];
+const LESSON_COUNT    = LAST_LESSON_IDX + 1;
+const CHAPTER_STARTS  = [0, 4, 5,9,13,17,18,22,26,30];
+
+function buildMainLessons() {
+  const subRanges = SUBLESSONS.map(([start, count]) => ({ start, end: start + count - 1 }));
+  const mains = [];
+  for (let i = 0; i <= LAST_LESSON_IDX; i++) {
+    const isMidSub = subRanges.some(({ start, end }) => i > start && i <= end);
+    if (!isMidSub) mains.push(i);
+  }
+  return mains;
+}
+
+const MAIN_LESSONS = buildMainLessons();
+
+function getChapterOf(lessonIdx) {
+  for (let i = CHAPTER_STARTS.length - 1; i >= 0; i--) {
+    if (lessonIdx >= CHAPTER_STARTS[i]) return i;
+  }
+  return 0;
+}
+
+function getNextMainLesson(lessonIdx) {
+  return MAIN_LESSONS.find(idx => idx > lessonIdx) ?? lessonIdx;
+}
+
+function getPrevMainLesson(lessonIdx) {
+  return [...MAIN_LESSONS].reverse().find(idx => idx < lessonIdx) ?? lessonIdx;
+}
+
+
+// --- REPEAT STRUCTURE -----------------------------------------------
+
+function range(start, end) {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+
+// [0, 1, 2, 3, 4, 5, 7, 8]
+const REPEAT_COUNT   = 3;
+const REPEAT_LESSONS =[0]
+
+// const REPEAT_LESSONS = [...range(0, 8), ...range(12, 16),...range(18, 23), ...range(25, 30)  ];
+
+let repeatPlayCount   = 0;
+let activeRepeatGroup = null;
+
+function getRepeatGroup(lessonIdx) {
+  for (const entry of REPEAT_LESSONS) {
+    if (Array.isArray(entry)) {
+      if (entry.includes(lessonIdx)) return entry;
+    } else {
+      if (entry === lessonIdx) return [entry];
+    }
+  }
+  return null;
+}
+
+function resetRepeat() {
+  repeatPlayCount   = 0;
+  activeRepeatGroup = null;
+}
+
+
+// --- CANVAS SETUP ---------------------------------------------------
 const canvas = document.getElementById("canvas");
 
 function setCanvasSize() {
@@ -11,25 +84,25 @@ function setCanvasSize() {
 setCanvasSize();
 
 
-// ─── LESSON TEXTS ────────────────────────────────────────────────────
+// --- LESSON TEXTS ---------------------------------------------------
 let lessonTexts = {};
 
 async function loadLessonTexts() {
-  const res = await fetch("lessons.csv");
+  const res = await fetch(lessonTextFile);
   const text = await res.text();
   const rows = text.trim().split("\n").slice(1);
 
   rows.forEach(row => {
-    const [lessonIdx, langIdx, line1, line2, line3] = row.split(",");
+    const [lessonIdx, line, en, ja, es, fr] = row.split("|");
     const t = parseInt(lessonIdx);
-    const l = parseInt(langIdx);
+    const l = parseInt(line);
 
     if (!lessonTexts[t]) lessonTexts[t] = {};
-    lessonTexts[t][l] = {
-      line1: line1.trim(),
-      line2: line2.trim(),
-      line3: line3.trim(),
-    };
+
+    [en, ja, es, fr].forEach((val, langIdx) => {
+      if (!lessonTexts[t][langIdx]) lessonTexts[t][langIdx] = {};
+      lessonTexts[t][langIdx][`line${l}`] = (val ?? "").trim();
+    });
   });
 }
 
@@ -46,11 +119,29 @@ function setLessonText(line1, line2, line3) {
 }
 
 
-// ─── VOCAB TEXTS ─────────────────────────────────────────────────────
+// --- LESSON NAVIGATION ----------------------------------------------
+let currentLessonIdx = 0;
+
+function goToLesson(idx) {
+  currentLessonIdx = Math.max(0, Math.min(idx, LESSON_COUNT - 1));
+
+  const vm = r.viewModelInstance;
+  if (!vm) return;
+
+  const langIdx = Math.round(vm.number("languageIdx").value);
+  const texts   = lessonTexts[currentLessonIdx]?.[langIdx];
+  if (texts) setLessonText(texts.line1, texts.line2, texts.line3);
+
+  const lessonVM = vm.viewModel("propertyOfLessonVM");
+  if (lessonVM) lessonVM.number("lessonIdx").value = currentLessonIdx;
+}
+
+
+// --- VOCAB TEXTS ---------------------------------------------------
 let vocabTexts = {};
 
 async function loadVocabTexts() {
-  const res = await fetch("vocab.csv");
+  const res = await fetch(vocabTextFile);
   const text = await res.text();
   const rows = text.trim().split("\n").slice(1);
 
@@ -68,8 +159,8 @@ async function loadVocabTexts() {
 }
 
 function setVocabTexts(langIdx) {
-  const vm       = r.viewModelInstance;
-  const vocabVM  = vm.viewModel("propertyOfVocabularyVM");
+  const vm      = r.viewModelInstance;
+  const vocabVM = vm.viewModel("propertyOfVocabularyVM");
   const startIdx = vocabPage * CARD_COUNT;
 
   for (let slot = 0; slot < CARD_COUNT; slot++) {
@@ -81,9 +172,8 @@ function setVocabTexts(langIdx) {
 }
 
 
-// ─── GAME LOGIC ──────────────────────────────────────────────────────
-const VOCAB_COUNT = 18;
-const SLOT_COUNT  = 9;
+// --- GAME LOGIC ------------------------------------------------------
+const SLOT_COUNT = 9;
 
 let imageList       = [];
 let audioList       = [];
@@ -95,7 +185,7 @@ function shuffle(arr) {
 }
 
 function startGame() {
-  const all = Array.from({ length: VOCAB_COUNT }, (_, i) => i);
+  const all = Array.from({ length: TOTAL_VOCAB }, (_, i) => i);
   imageList = shuffle(all).slice(0, SLOT_COUNT);
 
   const vm     = r.viewModelInstance;
@@ -127,10 +217,9 @@ function setCurrentQuestion(idx) {
 }
 
 
-// ─── VOCAB CARD LOGIC ────────────────────────────────────────────────
-const TOTAL_VOCAB = 18;
-const CARD_COUNT  = 12;
-const SENTINEL    = -99;
+// --- VOCAB CARD LOGIC ------------------------------------------------
+const CARD_COUNT = 12;
+const SENTINEL   = -99;
 
 let vocabPage            = 0;
 let lastVocabCardClicked = -1;
@@ -173,10 +262,10 @@ function startVocab(langIdx) {
 }
 
 
-// ─── POLLING LOOP ────────────────────────────────────────────────────
+// --- POLLING LOOP ---------------------------------------------------
 let lastStateNum = -1;
-let lastIdx      = -1;
 let lastLangIdx  = -1;
+let lastStartEnd = -1; // track 0→1 transitions
 
 function poll() {
   const vm = r.viewModelInstance;
@@ -191,20 +280,49 @@ function poll() {
       lastStateNum = stateNum;
     }
 
-    // ── lesson logic ──
+    // lesson logic
     if (stateNum === 1) {
-      const lessonVM = vm.viewModel("propertyOfLessonVM");
-      const idx      = Math.round(parseFloat(lessonVM.number("lessonIdx").value));
-
-      if (idx !== lastIdx || langIdx !== lastLangIdx) {
-        lastIdx     = idx;
-        lastLangIdx = langIdx;
-        const texts = lessonTexts[idx]?.[langIdx];
+      if (langIdx !== lastLangIdx) {
+        const texts = lessonTexts[currentLessonIdx]?.[langIdx];
         if (texts) setLessonText(texts.line1, texts.line2, texts.line3);
       }
+
+      const lessonVM = vm.viewModel("propertyOfLessonVM");
+      const startEnd = Math.round(lessonVM.number("startend").value);
+
+      // only act on 0 → 1 transition
+      if (startEnd === 1 && lastStartEnd === 0 && currentLessonIdx < LESSON_COUNT - 1) {
+        const group = getRepeatGroup(currentLessonIdx);
+
+        if (group) {
+          if (!activeRepeatGroup || activeRepeatGroup[0] !== group[0]) {
+            activeRepeatGroup = group;
+            repeatPlayCount   = 1;
+          }
+
+          const isLastInGroup = currentLessonIdx === group[group.length - 1];
+
+          if (isLastInGroup) {
+            if (repeatPlayCount < REPEAT_COUNT) {
+              repeatPlayCount++;
+              goToLesson(group[0]);
+            } else {
+              resetRepeat();
+              goToLesson(currentLessonIdx + 1);
+            }
+          } else {
+            goToLesson(currentLessonIdx + 1);
+          }
+        } else {
+          resetRepeat();
+          goToLesson(currentLessonIdx + 1);
+        }
+      }
+
+      lastStartEnd = startEnd;
     }
 
-    // ── game logic ──
+    // game logic
     if (stateNum === 2) {
       const gameVM  = vm.viewModel("propertyOfGameVM");
       const correct = Math.round(gameVM.number("correct").value);
@@ -219,7 +337,7 @@ function poll() {
       }
     }
 
-    // ── vocab card logic ──
+    // vocab card logic
     if (stateNum === 3) {
       const vocabVM = vm.viewModel("propertyOfVocabularyVM");
       if (!vocabVM) { requestAnimationFrame(poll); return; }
@@ -239,9 +357,9 @@ function poll() {
 }
 
 
-// ─── RIVE INSTANCE ───────────────────────────────────────────────────
+// --- RIVE INSTANCE ---------------------------------------------------
 const r = new rive.Rive({
-  src: "yokoyoma-ch1.riv",
+  src: riveFile,
   canvas,
   autoplay: true,
   autoBind: true,
@@ -259,7 +377,32 @@ const r = new rive.Rive({
 
     const vm = r.viewModelInstance;
 
-    // ── game triggers ──
+    // media player triggers (lesson navigation)
+    const mediaPlayerVM = vm.viewModel("propertyOfMediaPlayerVM");
+    mediaPlayerVM.trigger("forwardTrigger").on(() => {
+      resetRepeat();
+      lastStartEnd = -1;
+      goToLesson(getNextMainLesson(currentLessonIdx));
+    });
+    mediaPlayerVM.trigger("backwardTrigger").on(() => {
+      resetRepeat();
+      lastStartEnd = -1;
+      goToLesson(getPrevMainLesson(currentLessonIdx));
+    });
+    mediaPlayerVM.trigger("endTrigger").on(() => {
+      resetRepeat();
+      lastStartEnd = -1;
+      const next = getChapterOf(currentLessonIdx) + 1;
+      if (next < CHAPTER_STARTS.length) goToLesson(CHAPTER_STARTS[next]);
+    });
+    mediaPlayerVM.trigger("startTrigger").on(() => {
+      resetRepeat();
+      lastStartEnd = -1;
+      const prev = getChapterOf(currentLessonIdx) - 1;
+      if (prev >= 0) goToLesson(CHAPTER_STARTS[prev]);
+    });
+
+    // game triggers
     const gameControlVM = vm.viewModel("propertyOfGameControlVM");
     gameControlVM.trigger("newGameTrigger").on(() => {
       startGame();
@@ -270,7 +413,7 @@ const r = new rive.Rive({
       audioVM.number("audioIdx").value = currentVocabIdx;
     });
 
-    // ── vocab page triggers ──
+    // vocab page triggers
     const vocabControlVM = vm.viewModel("propertyOfVocabControlVM");
     vocabControlVM.trigger("nextPageTrigger").on(() => {
       setVocabPage(vocabPage + 1);
@@ -279,8 +422,8 @@ const r = new rive.Rive({
       setVocabPage(vocabPage - 1);
     });
 
-    // ── vocab card trigger ──
-    const vocabVM     = vm.viewModel("propertyOfVocabularyVM");
+    // vocab card trigger
+    const vocabVM      = vm.viewModel("propertyOfVocabularyVM");
     const vocabAudioVM = vocabVM.viewModel("propertyOfVocabAudioVM");
     vocabVM.trigger("cardTrigger").on(() => {
       const cardClicked   = Math.round(vocabVM.number("VocabCardClicked").value);
@@ -288,7 +431,7 @@ const r = new rive.Rive({
       vocabAudioVM.number("audioIdx").value = actualCardIdx;
     });
 
-    // ── pattern page triggers ──
+    // pattern page triggers
     const patternVM = vm.viewModel("propertyOfPatternVM");
     patternVM.trigger("patternNextTrigger").on(() => {
       const current = Math.round(patternVM.number("patternPageIdx").value);
@@ -298,11 +441,14 @@ const r = new rive.Rive({
       const current = Math.round(patternVM.number("patternPageIdx").value);
       patternVM.number("patternPageIdx").value = Math.max(0, current - 1);
     });
+
+    // set initial lesson
+    goToLesson(0);
   },
 });
 
 
-// ─── RESIZE HANDLER ──────────────────────────────────────────────────
+// --- RESIZE HANDLER ------------------------------------------------
 window.addEventListener("resize", () => {
   setCanvasSize();
   r.resizeDrawingSurfaceToCanvas();
