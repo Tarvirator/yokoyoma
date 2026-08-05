@@ -5,7 +5,7 @@ const vocabTextFile = "vocab.csv";
 const TOTAL_VOCAB = 43;
 
 // --- LESSON STRUCTURE -----------------------------------------------
-const LAST_LESSON_IDX = 30;
+const LAST_LESSON_IDX = 50;
 const SUBLESSONS      = [[5, 3], [9,3],[18,3]];
 const LESSON_COUNT    = LAST_LESSON_IDX + 1;
 const CHAPTER_STARTS  = [0, 4, 5,9,13,17,18,22,26,30];
@@ -39,30 +39,19 @@ function getPrevMainLesson(lessonIdx) {
 
 
 // --- REPEAT STRUCTURE -----------------------------------------------
-
 function range(start, end) {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-
-// [0, 1, 2, 3, 4, 5, 7, 8]
-const REPEAT_COUNT   = 3;
-const REPEAT_LESSONS =[0]
-
-// const REPEAT_LESSONS = [...range(0, 8), ...range(12, 16),...range(18, 23), ...range(25, 30)  ];
+const REPEAT_COUNT      = 3;
+const NO_REPEAT_LESSONS = new Set([9, 10, 11, 17, 24, 34, 46]);
 
 let repeatPlayCount   = 0;
 let activeRepeatGroup = null;
 
 function getRepeatGroup(lessonIdx) {
-  for (const entry of REPEAT_LESSONS) {
-    if (Array.isArray(entry)) {
-      if (entry.includes(lessonIdx)) return entry;
-    } else {
-      if (entry === lessonIdx) return [entry];
-    }
-  }
-  return null;
+  if (NO_REPEAT_LESSONS.has(lessonIdx)) return null;
+  return [lessonIdx];
 }
 
 function resetRepeat() {
@@ -134,6 +123,13 @@ function goToLesson(idx) {
 
   const lessonVM = vm.viewModel("propertyOfLessonVM");
   if (lessonVM) lessonVM.number("lessonIdx").value = currentLessonIdx;
+}
+
+function resetLesson() {
+  currentLessonIdx = 0;
+  lastStartEnd     = -1;
+  lastLangIdx      = -1;
+  resetRepeat();
 }
 
 
@@ -212,8 +208,13 @@ function setCurrentQuestion(idx) {
   const slotIdx  = imageList.indexOf(vocabIdx);
 
   currentVocabIdx = vocabIdx;
-  audioVM.number("audioIdx").value = vocabIdx;
-  gameVM.number("current").value   = slotIdx;
+  gameVM.number("current").value = slotIdx;
+
+  // reset audio first, then set after 1 second
+  audioVM.number("audioIdx").value = -1;
+  setTimeout(() => {
+    audioVM.number("audioIdx").value = vocabIdx;
+  }, 500);
 }
 
 
@@ -265,7 +266,7 @@ function startVocab(langIdx) {
 // --- POLLING LOOP ---------------------------------------------------
 let lastStateNum = -1;
 let lastLangIdx  = -1;
-let lastStartEnd = -1; // track 0→1 transitions
+let lastStartEnd = -1;
 
 function poll() {
   const vm = r.viewModelInstance;
@@ -275,8 +276,28 @@ function poll() {
 
     // detect state transitions
     if (stateNum !== lastStateNum) {
+
+      // leaving lesson
+      if (lastStateNum === 1) {
+        const lessonVM = vm.viewModel("propertyOfLessonVM");
+        if (lessonVM) lessonVM.number("lessonIdx").value = -1;
+        lastLangIdx = -1;
+      }
+
+      // entering lesson — reset JS state only
+      if (stateNum === 1) {
+        resetLesson();
+      }
+
       if (stateNum === 2) startGame();
       if (stateNum === 3) startVocab(langIdx);
+
+      // leaving lesson — reset lessonIdx in Rive (non-lesson states)
+      if (stateNum !== 1 && lastStateNum !== 1) {
+        const lessonVM = vm.viewModel("propertyOfLessonVM");
+        if (lessonVM) lessonVM.number("lessonIdx").value = -1;
+      }
+
       lastStateNum = stateNum;
     }
 
@@ -285,6 +306,9 @@ function poll() {
       if (langIdx !== lastLangIdx) {
         const texts = lessonTexts[currentLessonIdx]?.[langIdx];
         if (texts) setLessonText(texts.line1, texts.line2, texts.line3);
+
+        const lessonVM = vm.viewModel("propertyOfLessonVM");
+        if (lessonVM) lessonVM.number("lessonIdx").value = currentLessonIdx;
       }
 
       const lessonVM = vm.viewModel("propertyOfLessonVM");
@@ -325,6 +349,9 @@ function poll() {
     // game logic
     if (stateNum === 2) {
       const gameVM  = vm.viewModel("propertyOfGameVM");
+      // console.log("gameVM:", gameVM.properties);
+      const confettiVM= vm.viewModel("propertyOfConfettiVM")
+      // console.log("confettiVM:", confettiVM.properties);
       const correct = Math.round(gameVM.number("correct").value);
 
       if (correct !== lastCorrect) {
@@ -333,6 +360,11 @@ function poll() {
           setCurrentQuestion(correct);
         } else {
           console.log("game complete!");
+          setTimeout(() => {
+            gameVM.number("correct").value = -1;
+          }, 1000);
+          
+
         }
       }
     }
@@ -425,10 +457,22 @@ const r = new rive.Rive({
     // vocab card trigger
     const vocabVM      = vm.viewModel("propertyOfVocabularyVM");
     const vocabAudioVM = vocabVM.viewModel("propertyOfVocabAudioVM");
+
+    let cardTriggerDebounce = false;
+
     vocabVM.trigger("cardTrigger").on(() => {
+      if (cardTriggerDebounce) return;
+      cardTriggerDebounce = true;
+      setTimeout(() => cardTriggerDebounce = false, 300);
+
       const cardClicked   = Math.round(vocabVM.number("VocabCardClicked").value);
       const actualCardIdx = vocabPage * CARD_COUNT + cardClicked;
-      vocabAudioVM.number("audioIdx").value = actualCardIdx;
+
+      // reset to -1 first so Rive always sees a change
+      vocabAudioVM.number("audioIdx").value = -1;
+      setTimeout(() => {
+        vocabAudioVM.number("audioIdx").value = actualCardIdx;
+      }, 50);
     });
 
     // pattern page triggers
