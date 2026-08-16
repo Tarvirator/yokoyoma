@@ -1,0 +1,737 @@
+lessonIdx|line|kanji|hiragana|hon|book
+0|1|聞いてください|聞いてください|Listen please|Listen please
+0|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+0|3|はい、これは本です。|はい、これはほんです。|Hai, kore wa hon desu.|Yes, it is.
+0|4||||
+0|5||||
+1|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+1|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+1|3||||
+1|4||||
+1|5||||
+2|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+2|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+2|3|はい、これは本です。|はい、これはほんです。|Hai, kore wa hon desu.|Yes, it is.
+2|4||||
+2|5||||
+3|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+3|2|はい、これは本です。|はい、これはほんです。|Hai, kore wa hon desu.|Yes, it is.
+3|3||||
+3|4||||
+3|5||||
+4|1|答えてください。|答えてください。|Answer please|Answer please
+4|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+4|3|はい、これは本です。|はい、これはほんです。|Hai, kore wa hon desu.|Yes, it is.
+4|4||||
+4|5||||
+5|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+5|2|ペン|ペン|pen|pen
+5|3||||
+5|4||||
+5|5||||
+6|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+6|2|新聞|しんぶん|shinbun|newspaper
+6|3||||
+6|4||||
+6|5||||
+7|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+7|2|本|ほん|hon|book
+7|3||||
+7|4||||
+7|5||||
+8|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+8|2||||
+8|3||||
+8|4||||
+8|5||||
+9|1|答えてください。|答えてください。|Answer please|Answer please
+9|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+9|3|はい、これは本です。|はい、これはほんです。|Hai, kore wa hon desu.|Yes, it is.
+9|4||||
+9|5||||
+10|1|答えてください。|答えてください。|Answer please|Answer please
+10|2|これはペンですか。|これはペンですか。|Kore wa pen desu ka.|Is this a pen?
+10|3|はい、これはペンです。|はい、これはペンほんです。|Hai, kore wa pen desu.|Yes, it is.
+10|4||||
+10|5||||
+11|1|答えてください。|答えてください。|Answer please|Answer please
+11|2|これは新聞ですか。|これはしんぶんですか。|Kore wa shinbun desu ka.|Is this a newspaper?
+11|3|はい、これは新聞です。|はい、これはしんぶんほんです。|Hai, kore wa shinbun desu.|Yes, it is.
+11|4||||
+11|5||||
+12|1|答えてください。|答えてください。|Answer please|Answer please
+12|2||||
+12|3||||
+12|4||||
+12|5||||
+13|1|聞いてください|聞いてください|Listen please|Listen please
+13|2|それはコップですか。|それはコップですか。|Sore wa koppu desu ka.|Is that a cup?
+13|3|はい、それはコップです。|はい、それはコップです。|Hai, sore wa koppu desu.|Yes, it is.
+13|4||||
+13|5||||
+14|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+14|2|それはコップですか。|それはコップですか。|Sore wa koppu desu ka.|Is this a cup?
+14|3||||
+14|4||||
+14|5||||
+15|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+15|2|それはコップですか。|それはコップですか。|Sore wa koppu desu ka.|Is this a cup?
+15|3|はい、それはコップです。|はい、それはコップです。|Hai, sore wa koppu desu.|Yes, it is.
+15|4||||
+15|5||||
+16|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+16|2|はい、それはコップです。|はい、それはコップです。|Hai, sore wa koppu desu.|Yes, it is.
+16|3||||
+16|4||||
+16|5||||
+17|1|答えてください。|答えてください。|Answer please|Answer please
+17|2|それはコップですか。|それはコップですか。|Sore wa koppu desu ka.|Is this a cup?
+17|3|はい、それはコップです。|はい、それはコップです。|Hai, sore wa koppu desu.|Yes, it is.
+17|4||||
+17|5||||
+18|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+18|2|時計|とけい|tokei|clock
+18|3||||
+18|4||||
+18|5||||
+19|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+19|2|タバコ|たばこ|tabako|cigarettes
+19|3||||
+19|4||||
+19|5||||
+20|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+20|2|コップ|コップ|koppu|cup
+20|3||||
+20|4||||
+20|5||||
+21|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+21|2||||
+21|3||||
+21|4||||
+21|5||||
+22|1|答えてください。|答えてください。|Answer please|Answer please
+22|2|それはコップですか。|それはコップですか。|Sore wa koppu desu ka.|Is this a cup?
+22|3|はい、それはコップです。|はい、それはコップです。|Hai, sore wa koppu desu.|Yes, it is.
+22|4||||
+22|5||||
+23|1|答えてください。|答えてください。|Answer please|Answer please
+23|2|それは時計ですか。|それはとけいですか。|Sore wa tokei desu ka.|Is that a clock?
+23|3|はい、それは時計です。|はい、それはとけいです。|Hai, sore wa tokei desu.|Yes, it is.
+23|4||||
+23|5||||
+24|1|答えてください。|答えてください。|Answer please|Answer please
+24|2|それはタバコですか。|それはタバコですか。|Sore wa tabako desu ka.|Are those cigarettes?
+24|3|はい、それはタバコです。|はい、それはたばこです。|Hai, sore wa tabako desu.|Yes, they are.
+24|4||||
+24|5||||
+25|1|答えてください。|答えてください。|Answer please|Answer please
+25|2||||
+25|3||||
+25|4||||
+25|5||||
+26|1|聞いてください|聞いてください|Listen please|Listen please
+26|2|あれは机ですか。|あれはつくえですか。|Are wa tsukue desu ka.|Is that a desk?
+26|3|はい、あれは机です。|はい、あれはつくえです。|Hai, are wa tsukue desu.|Yes, it is.
+26|4||||
+26|5||||
+27|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+27|2|あれは机ですか。|あれはつくえですか。|Are wa tsukue desu ka.|Is that a desk?
+27|3||||
+27|4||||
+27|5||||
+28|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+28|2|あれは机ですか。|あはつくえですか。|Are wa tsukue desu ka.|Is that a desk?
+28|3|はい、あれは机です。|はい、あはつくえです。|Hai, are wa tsukue desu.|Yes, it is.
+28|4||||
+28|5||||
+29|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+29|2|はい、あれは机です。|はい、あはつくえです。|Hai, are wa tsukue desu.|Yes, it is.
+29|3||||
+29|4||||
+29|5||||
+30|1|答えてください。|答えてください。|Answer please|Answer please
+30|2|あれは机ですか。|あれはつくえですか。|Are wa tsukue desu ka.|Is that a desk?
+30|3|はい、あれは机です。|はい、これはつくえです。|Hai, are wa tsukue desu.|Yes, it is.
+30|4||||
+30|5||||
+31|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+31|2|車|くるま|kuruma|car
+31|3||||
+31|4||||
+31|5||||
+32|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+32|2|机|つくえ|tsukue|desk
+32|3||||
+32|4||||
+32|5||||
+33|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+33|2||||
+33|3||||
+33|4||||
+33|5||||
+34|1|答えてください。|答えてください。|Answer please|Answer please
+34|2|あれは机ですか。|あれはつくえですか。|Are wa tsukue desu ka.|Is that a desk?
+34|3|はい、あれは机です。|はい、あれはつくえです。|Hai, are wa tsukue desu.|Yes, it is.
+34|4||||
+34|5||||
+35|1|答えてください。|答えてください。|Answer please|Answer please
+35|2|あれは車ですか。|あれはくるまですか。|Are wa kuruma desu ka.|Is that a car?
+35|3|はい、あれは車です。|はい、あれはくるまです。|Hai, are wa kuruma desu.|Yes, it is.
+35|4||||
+35|5||||
+36|1|答えてください。|答えてください。|Answer please|Answer please
+36|2||||
+36|3||||
+36|4||||
+36|5||||
+37|1|聞いてください|聞いてください|Listen please|Listen please
+37|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+37|3|いいえ、これは本ではありません。|いいえ、これはほんではありません。|Iie, kore wa hon dewa arimasen.|No, it isn't.
+37|4||||
+37|5||||
+38|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+38|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+38|3||||
+38|4||||
+38|5||||
+39|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+39|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+39|3|いいえ、これは本ではありません。|いいえ、これはほんではありません。|Iie, kore wa hon dewa arimasen.|No, it isn't.
+39|4||||
+39|5||||
+40|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+40|2|いいえ、これは本ではありません。|いいえ、これはほんではありません。|Iie, kore wa hon dewa arimasen.|No, it isn't.
+40|3||||
+40|4||||
+40|5||||
+41|1|答えてください。|答えてください。|Answer please|Answer please
+41|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+41|3|いいえ、これは本ではありません。|いいえ、これはほんではありません。|Iie, kore wa hon dewa arimasen.|No, it isn't.
+41|4||||
+41|5||||
+42|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+42|2|鉛筆|えんぴつ|enpitsu|pencil
+42|3||||
+42|4||||
+42|5||||
+43|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+43|2|辞書|じしょ|jisho|dictionary
+43|3||||
+43|4||||
+43|5||||
+44|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+44|2|スプーン|スプーン|supuun|spoon
+44|3||||
+44|4||||
+44|5||||
+45|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+45|2||||
+45|3||||
+45|4||||
+45|5||||
+46|1|答えてください。|答えてください。|Answer please|Answer please
+46|2|これは本ですか。|これはほんですか。|Kore wa hon desu ka.|Is this a book?
+46|3|いいえ、これは本ではありません。|いいえ、これはほんではありません。|Iie, kore wa hon dewa arimasen.|No, it isn't.
+46|4||||
+46|5||||
+47|1|答えてください。|答えてください。|Answer please|Answer please
+47|2|これは鉛筆ですか。|これはえんぴつですか。|Kore wa enpitsu desu ka.|Is this a pencil?
+47|3|いいえ、これは鉛筆ではありません。|いいえ、これはえんぴつではありません。|Iie, kore wa enpitsu dewa arimasen.|No, it isn't.
+47|4||||
+47|5||||
+48|1|答えてください。|答えてください。|Answer please|Answer please
+48|2|これは辞書ですか。|これはじしょですか。|Kore wa jihso desu ka.|Is this a dictionary?
+48|3|いいえ、これは辞書ではありません。|いいえ、これはじしょではありません。|Iie, kore wa jisho dewa arimasen.|No, it isn't.
+48|4||||
+48|5||||
+49|1|答えてください。|答えてください。|Answer please|Answer please
+49|2|それはスプーンですか。|それはスプーンですか。|Sore wa supuun desu ka.|Is that a spoon?
+49|3|いいえ、それはスプーンではありません。|いいえ、それはスプーンではありません。|Iie, sore wa supuun dewa arimasen.|No, it isn't.
+49|4||||
+49|5||||
+50|1|答えてください。|答えてください。|Answer please|Answer please
+50|2||||
+50|3||||
+50|4||||
+50|5||||
+51|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+51|2|電話|でんわ|denwa|telephone
+51|3||||
+51|4||||
+51|5||||
+52|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+52|2|マッチ|マッチ|macchi|match
+52|3||||
+52|4||||
+52|5||||
+53|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+53|2|いす|いす|isu|chair
+53|3||||
+53|4||||
+53|5||||
+54|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+54|2|自転車|じてんしゃ|jitensha|bicycle
+54|3||||
+54|4||||
+54|5||||
+55|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+55|2||||
+55|3||||
+55|4||||
+55|5||||
+56|1|答えてください。|答えてください。|Answer please|Answer please
+56|2|それは電話ですか。|それはでんわですか。|Sore wa denwa desu ka.|Is that a telephone?
+56|3|いいえ、それは電話ではありません。|いいえ、それはでんわではありません。|Iie, sore wa denwa dewa arimasen.|No, it isn't.
+56|4||||
+56|5||||
+57|1|答えてください。|答えてください。|Answer please|Answer please
+57|2|それはマッチですか。|それはマッチですか。|Sore wa macchi desu ka.|Is that a match?
+57|3|いいえ、それはマッチではありません。|いいえ、それはマッチではありません。|Iie, sore wa macchi dewa arimasen.|No, it isn't.
+57|4||||
+57|5||||
+58|1|答えてください。|答えてください。|Answer please|Answer please
+58|2|あれはいすですか。|あれはいすですか。|Are wa isu desu ka.|Is that a chair?
+58|3|いいえ、それはいすではありません。|いいえ、それはいすではありません。|Iie, sore wa macchi dewa arimasen.|No, it isn't.
+58|4||||
+58|5||||
+59|1|答えてください。|答えてください。|Answer please|Answer please
+59|2|あれは自転車ですか。|あれはじてんしゃですか。|Are wa jitensha desu ka.|Is that a bicycle?
+59|3|いいえ、それは自転車ではありません。|いいえ、それはじてんしゃではありません。|Iie, sore wa jitensha dewa arimasen.|No, it isn't.
+59|4||||
+59|5||||
+60|1|答えてください。|答えてください。|Answer please|Answer please
+60|2||||
+60|3||||
+60|4||||
+60|5||||
+61|1|答えてください。|答えてください。|Answer please|Answer please
+61|2||||
+61|3||||
+61|4||||
+61|5||||
+62|1|答えてください。|答えてください。|Answer please|Answer please
+62|2||||
+62|3||||
+62|4||||
+62|5||||
+63|1|聞いてください|聞いてください|Listen please|Listen please
+63|2|これはペンですか。|これはペンですか。|Kore wa pen desu ka.|Is this a pen?
+63|3|はい、それはペンです。|はい、それはペンです。|Hai, sore wa pen desu.|Yes, it is.
+63|4||||
+63|5||||
+64|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+64|2|これはペンですか。|これはぺんですか。|Kore wa pen desu ka.|Is this a pen?
+64|3||||
+64|4||||
+64|5||||
+65|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+65|2|これはペンですか。|これはぺんですか。|Kore wa pen desu ka.|Is this a pen?
+65|3|はい、それはペンです。|はい、それはペンです。|Hai, sore wa pen desu.|Yes, it is.
+65|4||||
+65|5||||
+66|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+66|2|はい、それはペンです。|はい、それはペンです。|Hai, sore wa pen desu.|Yes, it is.
+66|3||||
+66|4||||
+66|5||||
+67|1|答えてください。|答えてください。|Answer please|Answer please
+67|2|これはペンですか。|これはペンですか。|Kore wa pen desu ka.|Is this a pen?
+67|3|はい、それはペンです。|はい、それはペンです。|Hai, sore wa pen desu.|Yes, it is.
+67|4||||
+67|5||||
+68|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+68|2|かばん|かばん|kaban|bag
+68|3||||
+68|4||||
+68|5||||
+69|1|答えてください。|答えてください。|Answer please|Answer please
+69|2|これはペンですか。|これはペンですか。|Kore wa pen desu ka.|Is this a pen?
+69|3|はい、それはペンです。|はい、それはペンです。|Hai, sore wa pen desu.|Yes, it is.
+69|4||||
+69|5||||
+70|1|答えてください。|答えてください。|Answer please|Answer please
+70|2|これはかばんですか。|これはかばんですか。|Kore wa kaban desu ka.|Is this a bag?
+70|3|はい、それはかばんです。|はい、それはかばんです。|Hai, sore wa kaban desu.|Yes, it is.
+70|4||||
+70|5||||
+71|1|答えてください。|答えてください。|Answer please|Answer please
+71|2||||
+71|3||||
+71|4||||
+71|5||||
+72|1|聞いてください|聞いてください|Listen please|Listen please
+72|2|それは雑誌ですか。|それはざっしですか。|Sore wa zasshi desu ka.|Is that a magazine?
+72|3|はい、これは雑誌です。|はい、これはざっしです。|Hai, kore wa zasshi desu.|Yes, this is a magazine.
+72|4||||
+72|5||||
+73|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+73|2|それは雑誌ですか。|それはざっしですか。|Sore wa zasshi desu ka.|Is that a magazine?
+73|3||||
+73|4||||
+73|5||||
+74|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+74|2|それは雑誌ですか。|それはざっしですか。|Sore wa zasshi desu ka.|Is that a magazine?
+74|3|はい、これは雑誌です。|はい、これはざっしです。|Hai, kore wa zasshi desu.|Yes, this is a magazine.
+74|4||||
+74|5||||
+75|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+75|2|はい、これは雑誌です。|はい、これはざっしです。|Hai, kore wa zasshi desu.|Yes, this is a magazine.
+75|3||||
+75|4||||
+75|5||||
+76|1|答えてください。|答えてください。|Answer please|Answer please
+76|2|それは雑誌ですか。|それはざっしですか。|Sore wa zasshi desu ka.|Is that a magazine?
+76|3|はい、これは雑誌です。|はい、これはざっしです。|Hai, kore wa zasshi desu.|Yes, this is a magazine.
+76|4||||
+76|5||||
+77|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+77|2|おはし|おはし|ohashi|chopsticks
+77|3||||
+77|4||||
+77|5||||
+78|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+78|2|雑誌|ざっし|zasshi|magazine
+78|3||||
+78|4||||
+78|5||||
+79|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+79|2||||
+79|3||||
+79|4||||
+79|5||||
+80|1|答えてください。|答えてください。|Answer please|Answer please
+80|2|それは雑誌ですか。|それはざっしですか。|Sore wa zasshi desu ka.|Is that a magazine?
+80|3|はい、これは雑誌です。|はい、これはざっしです。|Hai, kore wa zasshi desu.|Yes, this is a magazine.
+80|4||||
+80|5||||
+81|1|答えてください。|答えてください。|Answer please|Answer please
+81|2|それははしですか。|それははしですか。|Sore wa hashi desu ka.|Are those chopsticks?
+81|3|はい、それはおはしです。|はい、それはおはしです。|Hai, sore wa ohashi desu.|Yes, they are.
+81|4||||
+81|5||||
+82|1|答えてください。|答えてください。|Answer please|Answer please
+82|2||||
+82|3||||
+82|4||||
+82|5||||
+83|1|答えてください。|答えてください。|Answer please|Answer please
+83|2|これはカメラですか。|これはカメラですか。|Kore wa kamera desu ka.|Is this a camera?
+83|3|いいえ、それはカメラではありません。|いいえ、それはカメラではありません。|Iie, sore wa kamera dewa arimasen.|No, it is not a camera.
+83|4||||
+83|5||||
+84|1|答えてください。|答えてください。|Answer please|Answer please
+84|2|これは灰皿ですか。|これははいざらですか。|Kore wa haizara desu ka.|Is this an ashtray?
+84|3|いいえ、それは灰皿ではありません。|いいえ、それははいざらではありません。|Iie, sore wa haizara dewa arimasen.|No, it is not an ashtray.
+84|4||||
+84|5||||
+85|1|答えてください。|答えてください。|Answer please|Answer please
+85|2|それは切符ですか。|それはきっぷですか。|Sore wa kippu desu ka.|Is that a ticket?
+85|3|いいえ、これは切符ではありません。|いいえ、これはきっぷではありません。|Iie, kore wa kippu dewa arimasen.|No, this is not a ticket.
+85|4||||
+85|5||||
+86|1|答えてください。|答えてください。|Answer please|Answer please
+86|2|それは電車ですか。|それはでんしゃですか。|Sore wa densha desu ka.|Is that a train?
+86|3|いいえ、これは電車ではありません。|いいえ、これはでんしゃではありません。|Iie, kore wa densha dewa arimasen.|No, this is not a train.
+86|4||||
+86|5||||
+87|1|答えてください。|答えてください。|Answer please|Answer please
+87|2||||
+87|3||||
+87|4||||
+87|5||||
+88|1|答えてください。|答えてください。|Answer please|Answer please
+88|2||||
+88|3||||
+88|4||||
+88|5||||
+89|1|聞いてください|聞いてください|Listen please|Listen please
+89|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+89|3|これは時計です。|これはとけいです。|Kore wa tokei desu.|This is a clock.
+89|4||||
+89|5||||
+90|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+90|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+90|3||||
+90|4||||
+90|5||||
+91|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+91|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+91|3|これは時計です。|これはとけいです。|Kore wa tokei desu.|This is a clock.
+91|4||||
+91|5||||
+92|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+92|2|これは時計です。|これはとけいです。|Kore wa tokei desu.|This is a clock.
+92|3||||
+92|4||||
+92|5||||
+93|1|答えてください。|答えてください。|Answer please|Answer please
+93|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+93|3|これは時計です。|これはとけいです。|Kore wa tokei desu.|This is a clock.
+93|4||||
+93|5||||
+94|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+94|2|財布|さいふ|saifu|wallet
+94|3||||
+94|4||||
+94|5||||
+95|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+95|2|傘|かさ|kasa|umbrella
+95|3||||
+95|4||||
+95|5||||
+96|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+96|2|レコード|レコード|rekoodo|record
+96|3||||
+96|4||||
+96|5||||
+97|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+97|2||||
+97|3||||
+97|4||||
+97|5||||
+98|1|答えてください。|答えてください。|Answer please|Answer please
+98|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+98|3|これは時計です。|これはとけいです。|Kore wa tokei desu.|This is a clock.
+98|4||||
+98|5||||
+99|1|答えてください。|答えてください。|Answer please|Answer please
+99|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+99|3|これは財布です。|これはさいふです。|Kore wa saifu desu.|This is a wallet.
+99|4||||
+99|5||||
+100|1|答えてください。|答えてください。|Answer please|Answer please
+100|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+100|3|それは傘です。|それはかさです。|Sore wa kasa desu.|That is an umbrella.
+100|4||||
+100|5||||
+101|1|答えてください。|答えてください。|Answer please|Answer please
+101|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+101|3|それはレコードです。|それはレコードです。|Kore wa rekoodo desu.|That is a record.
+101|4||||
+101|5||||
+102|1|答えてください。|答えてください。|Answer please|Answer please
+102|2||||
+102|3||||
+102|4||||
+102|5||||
+103|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+103|2|テレビ|テレビ|terebi|television
+103|3||||
+103|4||||
+103|5||||
+104|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+104|2|ズボン|ズボン|zubon|trousers
+104|3||||
+104|4||||
+104|5||||
+105|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+105|2|箱|はこ|hako|box
+105|3||||
+105|4||||
+105|5||||
+106|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+106|2|バス|バス|basu|bus
+106|3||||
+106|4||||
+106|5||||
+107|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+107|2||||
+107|3||||
+107|4||||
+107|5||||
+108|1|答えてください。|答えてください。|Answer please|Answer please
+108|2|あれは何ですか。|あれはなんですか。|Are wa nan desu ka.|What is that?
+108|3|あれはテレビです。|あれはテレビです。|Are wa terebi desu.|That is a television.
+108|4||||
+108|5||||
+109|1|答えてください。|答えてください。|Answer please|Answer please
+109|2|あれは何ですか。|あれはなんですか。|Are wa nan desu ka.|What are those?
+109|3|あれはズボンです。|あれはズボンです。|Are wa zubon desu.|Those are trousers.
+109|4||||
+109|5||||
+110|1|答えてください。|答えてください。|Answer please|Answer please
+110|2|これは何ですか。|これはなんですか。|Kore wa nan desu ka.|What is this?
+110|3|それは箱です。|それははこです。|Sore wa hako desu.|That is a box
+110|4||||
+110|5||||
+111|1|答えてください。|答えてください。|Answer please|Answer please
+111|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+111|3|これはバスです。|これはバスです。|Kore wa basu desu.|This is a bus.
+111|4||||
+111|5||||
+112|1|答えてください。|答えてください。|Answer please|Answer please
+112|2||||
+112|3||||
+112|4||||
+112|5||||
+113|1|聞いてください|聞いてください|Listen please|Listen please
+113|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+113|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+113|4|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+113|5|これはラジオです。|これはラジオです。|Kore wa rajio desu.|This is a radio.
+114|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+114|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+114|3||||
+114|4||||
+114|5||||
+115|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+115|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+115|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+115|4||||
+115|5||||
+116|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+116|2|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+116|3||||
+116|4||||
+116|5||||
+117|1|答えてください。|答えてください。|Answer please|Answer please
+117|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+117|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+117|4|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+117|5||||
+118|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+118|2|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+118|3||||
+118|4||||
+118|5||||
+119|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+119|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+119|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+119|4|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+119|5|これはラジオです。|これはラジオです。|Kore wa rajio desu.|This is a radio.
+120|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+120|2|これはラジオです。|これはラジオです。|Kore wa rajio desu.|This is a radio.
+120|3||||
+120|4||||
+120|5||||
+121|1|答えてください。|答えてください。|Answer please|Answer please
+121|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+121|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+121|4|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+121|5|これはラジオです。|これはラジオです。|Kore wa rajio desu.|This is a radio.
+122|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+122|2|靴|くつ|kutsu|shoes
+122|3||||
+122|4||||
+122|5||||
+123|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+123|2|ラジオ|ラジオ|rajio|radio
+123|3||||
+123|4||||
+123|5||||
+124|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+124|2||||
+124|3||||
+124|4||||
+124|5||||
+125|1|答えてください。|答えてください。|Answer please|Answer please
+125|2|これはテレビですか。|これはテレビですか。|Kore wa terebi desu ka.|Is this a television?
+125|3|いいえ、これはテレビではありません。|いいえ、これはテレビではありません。|Iie, kore wa terebi dewa arimasen.|No, this is not a television.
+125|4|じゃあ、これは何ですか。|じゃあ、これはなんですか。|Jaa, kore wa nan desu ka.|Then, what is it?
+125|5|これはラジオです。|これはラジオです。|Kore wa rajio desu.|This is a radio.
+126|1|答えてください。|答えてください。|Answer please|Answer please
+126|2|それはナイフですか。|それはナイフですか。|Sore wa naifu desu ka.|Is that a knife?
+126|3|いいえ、それはナイフではありません。|いいえ、それはナイフではありません。|Iie, sore wa naifu dewa arimasen.|No, this is not a knife.
+126|4|それはおはしです。|それはおはしです。|Sore wa ohashi desu.|It is a pair of chopsticks.
+126|5||||
+127|1|答えてください。|答えてください。|Answer please|Answer please
+127|2|あれはスリッパですか。|あれはスリッパですか。|Are wa surippa desu ka.|Are those slippers?
+127|3|いいえ、それはスリッパではありません。|いいえ、それはスリッパではありません。|Iie, sore wa surippa dewa arimasen.|No, they are not slippers.
+127|4|あれは靴です。|あれはくつです。|Are wa kutsu desu.|Those are shoes.
+127|5||||
+128|1|答えてください。|答えてください。|Answer please|Answer please
+128|2|これはスカートですか。|これはスカートですか。|Kore wa sukaato desu ka.|Is this a skirt?
+128|3|いいえ、それはスカートではありません。|いいえ、それはスカートではありません。|Iie, sore wa sukaato dewa arimasen.|No, they are not slippers.
+128|4|それはズボンです。|それはズボンです。|Sore wa zubon desu.|That's a pair of trousers.
+128|5||||
+129|1|答えてください。|答えてください。|Answer please|Answer please
+129|2||||
+129|3||||
+129|4||||
+129|5||||
+130|1|聞いてください|聞いてください|Listen please|Listen please
+130|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+130|3|どれですか|どれですか|Dore desu ka.|Which one?
+130|4|これです。|これです。|Kore desu.|This one.
+130|5|これはかぎです。|これはかぎです。|Kore wa kagi desu.|This is a key.
+131|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+131|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+131|3||||
+131|4||||
+131|5||||
+132|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+132|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+132|3|どれですか|どれですか|Dore desu ka.|Which one?
+132|4||||
+132|5||||
+133|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+133|2|どれですか|どれですか|Dore desu ka.|Which one?
+133|3||||
+133|4||||
+133|5||||
+134|1|答えてください。|答えてください。|Answer please|Answer please
+134|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+134|3|どれですか|どれですか|Dore desu ka.|Which one?
+134|4|これです。|これです。|Kore desu.|This one.
+134|5||||
+135|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+135|2|これです。|これです。|Kore desu.|This one.
+135|3||||
+135|4||||
+135|5||||
+136|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+136|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+136|3|どれですか|どれですか|Dore desu ka.|Which one?
+136|4|これです。|これです。|Kore desu.|This one.
+136|5|これはかぎです。|これはかぎです。|Kore wa kagi desu.|This is a key.
+137|1|繰り返して下さい。|繰り返して下さい。|Repeat, please|Repeat, please
+137|2|これはかぎです。|これはかぎです。|Kore wa kagi desu.|This is a key.
+137|3||||
+137|4||||
+137|5||||
+138|1|答えてください。|答えてください。|Answer please|Answer please
+138|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+138|3|どれですか|どれですか|Dore desu ka.|Which one?
+138|4|これです。|これです。|Kore desu.|This one.
+138|5|これはかぎです。|これはかぎです。|Kore wa kagi desu.|This is a key.
+139|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+139|2|地図|ちず|chizu|map
+139|3||||
+139|4||||
+139|5||||
+140|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+140|2|切手|きって|kitte|stamp
+140|3||||
+140|4||||
+140|5||||
+141|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+141|2|かぎ|かぎ|kagi|key
+141|3||||
+141|4||||
+141|5||||
+142|1|言って下さい。|言って下さい。|Say it, please|Say it, please
+142|2||||
+142|3||||
+142|4||||
+142|5||||
+143|1|答えてください。|答えてください。|Answer please|Answer please
+143|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+143|3|どれですか|どれですか|Dore desu ka.|Which one?
+143|4|これです。|これです。|Kore desu.|This one.
+143|5|これはかぎです。|これはかぎです。|Kore wa kagi desu.|This is a key.
+144|1|答えてください。|答えてください。|Answer please|Answer please
+144|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+144|3|どれですか|どれですか|Dore desu ka.|Which one?
+144|4|これです。|これです。|Kore desu.|This one.
+144|5|これは地図です。|これはちずです。|Kore wa chizu desu.|This is a map.
+145|1|答えてください。|答えてください。|Answer please|Answer please
+145|2|それは何ですか。|それはなんですか。|Sore wa nan desu ka.|What is that?
+145|3|どれですか|どれですか|Dore desu ka.|Which one?
+145|4|これです。|これです。|Kore desu.|This one.
+145|5|これは切手です。|これきってです。|Kore wa kitte desu.|This is a stamp.
+146|1|答えてください。|答えてください。|Answer please|Answer please
+146|2||||
+146|3||||
+146|4||||
+146|5||||
+147|20||||

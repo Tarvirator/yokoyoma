@@ -1,26 +1,67 @@
 //---- FILES -------------------------------
-const riveFile = "yokoyoma-ch1.riv";
-const lessonTextFile = "lessonsnew.csv";
-const vocabTextFile = "vocab.csv";
-const TOTAL_VOCAB = 43;
+const riveFile        = "yokoyoma-ch1.riv";
+const lessonTextFile  = "lesson_text.csv";
+const lessonStructFile= "lesson_structure_pos_updated.csv";
+const vocabTextFile   = "vocab.csv";
+const TOTAL_VOCAB     = 43;
 
 // --- LESSON STRUCTURE -----------------------------------------------
-const LAST_LESSON_IDX = 50;
-const SUBLESSONS      = [[5, 3], [9,3],[18,3]];
-const LESSON_COUNT    = LAST_LESSON_IDX + 1;
-const CHAPTER_STARTS  = [0, 4, 5,9,13,17,18,22,26,30];
+const SUBLESSONS     = [[5, 3], [9,3],[18,3],[31,2],[42,3],[51,4],[77,2],[94,3],[103,4],[139,3]];
+const CHAPTER_STARTS = [0, 4, 5,9,13,17,18,22,26,30,31,34,37,41,42,46,51,56,63,67,68,69,72,76,
+  77,80,83,89,93,94,98,103,108,113,117,121,122,125,130,134,135,136,137,138,139,143,144,147];
+
+let LESSON_COUNT = 0;
+let LESSON_DATA  = {};
+
+async function loadLessonStructure() {
+  const res  = await fetch(lessonStructFile);
+  const text = await res.text();
+  const rows = text.trim().split("\n").slice(1);
+
+  rows.forEach(row => {
+    const cols = row.replace(/\r/g, "").split(",");
+    const idx  = parseInt(cols[0]);
+
+    LESSON_DATA[idx] = {
+      type  : parseInt(cols[1])   || 0,
+      audio1: (cols[2]  ?? "").trim(),
+      audio2: (cols[3]  ?? "").trim(),
+      audio3: (cols[4]  ?? "").trim(),
+      audio4: (cols[5]  ?? "").trim(),
+      audio5: (cols[6]  ?? "").trim(),
+      audio6: (cols[7]  ?? "").trim(),
+      audio7: (cols[8]  ?? "").trim(),
+      vocab1: parseInt(cols[9])   || 0,
+      vocab2: parseInt(cols[10])  || 0,
+      vocab3: parseInt(cols[11])  || 0,
+      vocab4: parseInt(cols[12])  || 0,
+      vocab5: parseInt(cols[13])  || 0,
+      vocab6: parseInt(cols[14])  || 0,
+      vocab7: parseInt(cols[15])  || 0,
+      pos1  : parseInt(cols[16])  || 0,
+      pos2  : parseInt(cols[17])  || 0,
+      pos3  : parseInt(cols[18])  || 0,
+      pos4  : parseInt(cols[19])  || 0,
+      pos5  : parseInt(cols[20])  || 0,
+      pos6  : parseInt(cols[21])  || 0,
+      pos7  : parseInt(cols[22])  || 0,
+    };
+
+    LESSON_COUNT = Math.max(LESSON_COUNT, idx + 1);
+  });
+}
 
 function buildMainLessons() {
   const subRanges = SUBLESSONS.map(([start, count]) => ({ start, end: start + count - 1 }));
   const mains = [];
-  for (let i = 0; i <= LAST_LESSON_IDX; i++) {
+  for (let i = 0; i < LESSON_COUNT; i++) {
     const isMidSub = subRanges.some(({ start, end }) => i > start && i <= end);
     if (!isMidSub) mains.push(i);
   }
   return mains;
 }
 
-const MAIN_LESSONS = buildMainLessons();
+let MAIN_LESSONS = [];
 
 function getChapterOf(lessonIdx) {
   for (let i = CHAPTER_STARTS.length - 1; i >= 0; i--) {
@@ -39,19 +80,45 @@ function getPrevMainLesson(lessonIdx) {
 
 
 // --- REPEAT STRUCTURE -----------------------------------------------
-function range(start, end) {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+const REPEAT_STRUCTURE = [
+  { from: 0,   to: 8   },
+  { from: 10,  to: 16  },
+  { from: 18,  to: 21  },
+  { from: 23,  to: 33  },
+  { from: 35,  to: 45  },
+  { from: 47,  to: 60  },
+  { from: 62,  to: 68  },
+  { from: 70,  to: 79  },
+  { from: 81,  to: 97  },
+  { from: 99,  to: 124 },
+  { from: 126, to: 142 },
+  { from: 144, to: 146 },
+];
+
+function buildRepeatGroups(structure) {
+  const map = new Map();
+  structure.forEach(entry => {
+    if (typeof entry === "number") {
+      map.set(entry, [entry]);
+    } else if (Array.isArray(entry)) {
+      entry.forEach(idx => map.set(idx, entry));
+    } else if (entry && typeof entry === "object" && "from" in entry && "to" in entry) {
+      for (let i = entry.from; i <= entry.to; i++) {
+        map.set(i, [i]);
+      }
+    }
+  });
+  return map;
 }
 
-const REPEAT_COUNT      = 3;
-const NO_REPEAT_LESSONS = new Set([9, 10, 11, 17, 24, 34, 46]);
+const REPEAT_GROUPS = buildRepeatGroups(REPEAT_STRUCTURE);
+const REPEAT_COUNT  = 3;
 
 let repeatPlayCount   = 0;
 let activeRepeatGroup = null;
 
 function getRepeatGroup(lessonIdx) {
-  if (NO_REPEAT_LESSONS.has(lessonIdx)) return null;
-  return [lessonIdx];
+  return REPEAT_GROUPS.get(lessonIdx) ?? null;
 }
 
 function resetRepeat() {
@@ -77,34 +144,34 @@ setCanvasSize();
 let lessonTexts = {};
 
 async function loadLessonTexts() {
-  const res = await fetch(lessonTextFile);
+  const res  = await fetch(lessonTextFile);
   const text = await res.text();
   const rows = text.trim().split("\n").slice(1);
 
   rows.forEach(row => {
-    const [lessonIdx, line, en, ja, es, fr] = row.split("|");
+    const [lessonIdx, line, kanji, hiragana, hon, book] = row.replace(/\r/g, "").split("|");
     const t = parseInt(lessonIdx);
     const l = parseInt(line);
 
     if (!lessonTexts[t]) lessonTexts[t] = {};
 
-    [en, ja, es, fr].forEach((val, langIdx) => {
+    [kanji, hiragana, hon, book].forEach((val, langIdx) => {
       if (!lessonTexts[t][langIdx]) lessonTexts[t][langIdx] = {};
       lessonTexts[t][langIdx][`line${l}`] = (val ?? "").trim();
     });
   });
 }
 
-function setLessonText(line1, line2, line3) {
+function setLessonText(texts) {
   const vm = r.viewModelInstance;
   if (!vm) return;
 
   const lessonVM = vm.viewModel("propertyOfLessonVM");
   if (!lessonVM) return;
 
-  lessonVM.string("line1").value = line1;
-  lessonVM.string("line2").value = line2;
-  lessonVM.string("line3").value = line3;
+  for (let i = 1; i <= 5; i++) {
+    lessonVM.string(`line${i}`).value = texts[`line${i}`] ?? "";
+  }
 }
 
 
@@ -119,10 +186,40 @@ function goToLesson(idx) {
 
   const langIdx = Math.round(vm.number("languageIdx").value);
   const texts   = lessonTexts[currentLessonIdx]?.[langIdx];
-  if (texts) setLessonText(texts.line1, texts.line2, texts.line3);
+  if (texts) setLessonText(texts);
 
   const lessonVM = vm.viewModel("propertyOfLessonVM");
-  if (lessonVM) lessonVM.number("lessonIdx").value = currentLessonIdx;
+  if (!lessonVM) return;
+
+  const data = LESSON_DATA[currentLessonIdx];
+  if (!data) return;
+
+  lessonVM.number("lessonIdx").value  = currentLessonIdx;
+  lessonVM.number("lessonType").value = data.type;
+
+  for (let i = 1; i <= 7; i++) {
+    lessonVM.number(`pos${i}`).value   = data[`pos${i}`];
+    lessonVM.number(`vocab${i}`).value = data[`vocab${i}`];
+    lessonVM.string(`audio${i}`).value = data[`audio${i}`];
+  }
+}
+
+function hardResetLesson(thenGoTo) {
+  // momentarily set sentinels so Rive detects a real change
+  const vm = r.viewModelInstance;
+  if (!vm) return;
+
+  const lessonVM = vm.viewModel("propertyOfLessonVM");
+  if (lessonVM) {
+    lessonVM.number("lessonIdx").value  = -100;
+    lessonVM.number("lessonType").value = -100;
+  }
+
+  lastStartEnd = -1;
+  lastLangIdx  = -1;
+  resetRepeat();
+
+  setTimeout(() => goToLesson(thenGoTo), 50);
 }
 
 function resetLesson() {
@@ -137,12 +234,12 @@ function resetLesson() {
 let vocabTexts = {};
 
 async function loadVocabTexts() {
-  const res = await fetch(vocabTextFile);
+  const res  = await fetch(vocabTextFile);
   const text = await res.text();
   const rows = text.trim().split("\n").slice(1);
 
   rows.forEach(row => {
-    const [cardIdx, en, ja, es, fr] = row.split(",");
+    const [cardIdx, en, ja, es, fr] = row.replace(/\r/g, "").split(",");
     const c = parseInt(cardIdx);
 
     vocabTexts[c] = {
@@ -210,7 +307,6 @@ function setCurrentQuestion(idx) {
   currentVocabIdx = vocabIdx;
   gameVM.number("current").value = slotIdx;
 
-  // reset audio first, then set after 1 second
   audioVM.number("audioIdx").value = -1;
   setTimeout(() => {
     audioVM.number("audioIdx").value = vocabIdx;
@@ -271,28 +367,38 @@ let lastStartEnd = -1;
 function poll() {
   const vm = r.viewModelInstance;
   if (vm) {
-    const stateNum = Math.round(parseFloat(vm.string("stateNum").value));
-    const langIdx  = Math.round(vm.number("languageIdx").value);
+    const stateNum  = Math.round(parseFloat(vm.string("stateNum").value));
+    const lastState = Math.round(vm.number("lastState").value);
+    const langIdx   = Math.round(vm.number("languageIdx").value);
 
     // detect state transitions
     if (stateNum !== lastStateNum) {
 
       // leaving lesson
-      if (lastStateNum === 1) {
+    if (lastStateNum === 1) {
+      if (stateNum === 0) {
+        // resetLesson();
+        hardResetLesson(0);
+      } else {
         const lessonVM = vm.viewModel("propertyOfLessonVM");
-        if (lessonVM) lessonVM.number("lessonIdx").value = -1;
-        lastLangIdx = -1;
+        // if (lessonVM) lessonVM.number("lessonIdx").value = -1;
       }
+      lastLangIdx = -1;
+    }
 
-      // entering lesson — reset JS state only
+      // entering lesson
       if (stateNum === 1) {
-        resetLesson();
+        if (lastState === 0) {
+          // coming from homepage → always fresh start
+          // resetLesson();
+          hardResetLesson(0);
+        }
+        // coming from any other state → resume (no reset, currentLessonIdx preserved)
       }
 
       if (stateNum === 2) startGame();
       if (stateNum === 3) startVocab(langIdx);
 
-      // leaving lesson — reset lessonIdx in Rive (non-lesson states)
       if (stateNum !== 1 && lastStateNum !== 1) {
         const lessonVM = vm.viewModel("propertyOfLessonVM");
         if (lessonVM) lessonVM.number("lessonIdx").value = -1;
@@ -305,16 +411,18 @@ function poll() {
     if (stateNum === 1) {
       if (langIdx !== lastLangIdx) {
         const texts = lessonTexts[currentLessonIdx]?.[langIdx];
-        if (texts) setLessonText(texts.line1, texts.line2, texts.line3);
+        if (texts) setLessonText(texts);
 
         const lessonVM = vm.viewModel("propertyOfLessonVM");
-        if (lessonVM) lessonVM.number("lessonIdx").value = currentLessonIdx;
+        if (lessonVM) {
+          lessonVM.number("lessonIdx").value  = currentLessonIdx;
+          lessonVM.number("lessonType").value = LESSON_DATA[currentLessonIdx]?.type ?? 0;
+        }
       }
 
       const lessonVM = vm.viewModel("propertyOfLessonVM");
       const startEnd = Math.round(lessonVM.number("startend").value);
 
-      // only act on 0 → 1 transition
       if (startEnd === 1 && lastStartEnd === 0 && currentLessonIdx < LESSON_COUNT - 1) {
         const group = getRepeatGroup(currentLessonIdx);
 
@@ -349,9 +457,6 @@ function poll() {
     // game logic
     if (stateNum === 2) {
       const gameVM  = vm.viewModel("propertyOfGameVM");
-      // console.log("gameVM:", gameVM.properties);
-      const confettiVM= vm.viewModel("propertyOfConfettiVM")
-      // console.log("confettiVM:", confettiVM.properties);
       const correct = Math.round(gameVM.number("correct").value);
 
       if (correct !== lastCorrect) {
@@ -363,8 +468,6 @@ function poll() {
           setTimeout(() => {
             gameVM.number("correct").value = -1;
           }, 1000);
-          
-
         }
       }
     }
@@ -403,13 +506,17 @@ const r = new rive.Rive({
   }),
   onLoad: async () => {
     r.resizeDrawingSurfaceToCanvas();
+    await loadLessonStructure();
     await loadLessonTexts();
     await loadVocabTexts();
+
+    MAIN_LESSONS = buildMainLessons();
+
     poll();
 
     const vm = r.viewModelInstance;
 
-    // media player triggers (lesson navigation)
+    // media player triggers
     const mediaPlayerVM = vm.viewModel("propertyOfMediaPlayerVM");
     mediaPlayerVM.trigger("forwardTrigger").on(() => {
       resetRepeat();
@@ -433,16 +540,30 @@ const r = new rive.Rive({
       const prev = getChapterOf(currentLessonIdx) - 1;
       if (prev >= 0) goToLesson(CHAPTER_STARTS[prev]);
     });
+    mediaPlayerVM.trigger("repeatTrigger").on(() => {
+      lastStartEnd = -1;
+      hardResetLesson(currentLessonIdx);
+    });
 
     // game triggers
     const gameControlVM = vm.viewModel("propertyOfGameControlVM");
     gameControlVM.trigger("newGameTrigger").on(() => {
       startGame();
     });
+
+    let listenAgainDebounce = false;
     gameControlVM.trigger("listenAgainTrigger").on(() => {
+      if (listenAgainDebounce) return;
       if (currentVocabIdx === -1) return;
+
+      listenAgainDebounce = true;
+      setTimeout(() => listenAgainDebounce = false, 300);
+
       const audioVM = vm.viewModel("propertyOfGameVM").viewModel("propertyOfVocabAudioVM");
-      audioVM.number("audioIdx").value = currentVocabIdx;
+      audioVM.number("audioIdx").value = -1;
+      setTimeout(() => {
+        audioVM.number("audioIdx").value = currentVocabIdx;
+      }, 50);
     });
 
     // vocab page triggers
@@ -459,7 +580,6 @@ const r = new rive.Rive({
     const vocabAudioVM = vocabVM.viewModel("propertyOfVocabAudioVM");
 
     let cardTriggerDebounce = false;
-
     vocabVM.trigger("cardTrigger").on(() => {
       if (cardTriggerDebounce) return;
       cardTriggerDebounce = true;
@@ -468,7 +588,6 @@ const r = new rive.Rive({
       const cardClicked   = Math.round(vocabVM.number("VocabCardClicked").value);
       const actualCardIdx = vocabPage * CARD_COUNT + cardClicked;
 
-      // reset to -1 first so Rive always sees a change
       vocabAudioVM.number("audioIdx").value = -1;
       setTimeout(() => {
         vocabAudioVM.number("audioIdx").value = actualCardIdx;
