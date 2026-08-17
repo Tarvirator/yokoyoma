@@ -80,45 +80,17 @@ function getPrevMainLesson(lessonIdx) {
 
 
 // --- REPEAT STRUCTURE -----------------------------------------------
-const REPEAT_STRUCTURE = [
-  { from: 0,   to: 8   },
-  { from: 10,  to: 16  },
-  { from: 18,  to: 21  },
-  { from: 23,  to: 33  },
-  { from: 35,  to: 45  },
-  { from: 47,  to: 60  },
-  { from: 62,  to: 68  },
-  { from: 70,  to: 79  },
-  { from: 81,  to: 97  },
-  { from: 99,  to: 124 },
-  { from: 126, to: 142 },
-  { from: 144, to: 146 },
-];
+// List lessons that should NOT repeat — everything else repeats REPEAT_COUNT times
+const NO_REPEAT_LESSONS = new Set([9, 17, 22, 34, 61, 69, 80, 98, 125, 143]);
 
-function buildRepeatGroups(structure) {
-  const map = new Map();
-  structure.forEach(entry => {
-    if (typeof entry === "number") {
-      map.set(entry, [entry]);
-    } else if (Array.isArray(entry)) {
-      entry.forEach(idx => map.set(idx, entry));
-    } else if (entry && typeof entry === "object" && "from" in entry && "to" in entry) {
-      for (let i = entry.from; i <= entry.to; i++) {
-        map.set(i, [i]);
-      }
-    }
-  });
-  return map;
-}
-
-const REPEAT_GROUPS = buildRepeatGroups(REPEAT_STRUCTURE);
-const REPEAT_COUNT  = 3;
+const REPEAT_COUNT = 3;
 
 let repeatPlayCount   = 0;
 let activeRepeatGroup = null;
 
 function getRepeatGroup(lessonIdx) {
-  return REPEAT_GROUPS.get(lessonIdx) ?? null;
+  if (NO_REPEAT_LESSONS.has(lessonIdx)) return null;
+  return [lessonIdx];
 }
 
 function resetRepeat() {
@@ -205,7 +177,6 @@ function goToLesson(idx) {
 }
 
 function hardResetLesson(thenGoTo) {
-  // momentarily set sentinels so Rive detects a real change
   const vm = r.viewModelInstance;
   if (!vm) return;
 
@@ -375,25 +346,22 @@ function poll() {
     if (stateNum !== lastStateNum) {
 
       // leaving lesson
-    if (lastStateNum === 1) {
-      if (stateNum === 0) {
-        // resetLesson();
-        hardResetLesson(0);
-      } else {
-        const lessonVM = vm.viewModel("propertyOfLessonVM");
-        // if (lessonVM) lessonVM.number("lessonIdx").value = -1;
+      if (lastStateNum === 1) {
+        if (stateNum === 0) {
+          hardResetLesson(0);
+        } else {
+          const lessonVM = vm.viewModel("propertyOfLessonVM");
+          if (lessonVM) lessonVM.number("lessonIdx").value = -1;
+        }
+        lastLangIdx = -1;
       }
-      lastLangIdx = -1;
-    }
 
       // entering lesson
       if (stateNum === 1) {
         if (lastState === 0) {
-          // coming from homepage → always fresh start
-          // resetLesson();
           hardResetLesson(0);
         }
-        // coming from any other state → resume (no reset, currentLessonIdx preserved)
+        // from any other state → resume at currentLessonIdx
       }
 
       if (stateNum === 2) startGame();
@@ -515,6 +483,38 @@ const r = new rive.Rive({
     poll();
 
     const vm = r.viewModelInstance;
+
+    // ── ESC key → exittrigger ──────────────────────────────────────
+   window.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+
+    const stateNum  = Math.round(parseFloat(vm.string("stateNum").value));
+    const lastState = Math.round(vm.number("lastState").value);
+
+    if (lastState !== 1) {
+      // not coming from lesson — just exit
+      vm.trigger("exittrigger").trigger();
+    } else {
+      // coming from lesson — trigger mode-specific return
+      switch (stateNum) {
+        case 2:
+          vm.viewModel("propertyOfGameControlVM").trigger("returnTriggerGame").trigger();
+          break;
+        case 3:
+          vm.viewModel("propertyOfVocabControlVM").trigger("returnTriggerVocabPage").trigger();
+          break;
+        case 4:
+          vm.viewModel("propertyOfPatternVM").trigger("patternReturnTrigger").trigger();
+          break;
+        case 5:
+          vm.viewModel("propertyOfAlphabetVM").trigger("returnAlphaTrigger").trigger();
+          break;
+        default:
+          vm.trigger("exittrigger").trigger();
+          break;
+      }
+    }
+  });
 
     // media player triggers
     const mediaPlayerVM = vm.viewModel("propertyOfMediaPlayerVM");
