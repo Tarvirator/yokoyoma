@@ -2,7 +2,7 @@
 const riveFile        = "yokoyoma-ch1.riv";
 const lessonTextFile  = "lesson_text.csv";
 const lessonStructFile= "lesson_structure_pos_updated.csv";
-const vocabTextFile   = "vocab.csv";
+const vocabTextFile   = "vocabulary.csv";
 const TOTAL_VOCAB     = 43;
 
 // --- LESSON STRUCTURE -----------------------------------------------
