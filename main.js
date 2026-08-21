@@ -1,5 +1,5 @@
 //---- FILES -------------------------------
-const riveFile        = "yokoyoma-ch1.riv";
+const riveFile        = "yokoyoma-ch2_lesson.riv";
 const lessonTextFile  = "lesson_text.csv";
 const lessonStructFile= "lesson_structure_pos_updated.csv";
 const vocabTextFile   = "vocabulary.csv";
@@ -469,7 +469,7 @@ const r = new rive.Rive({
   artboard: "Artboard",
   stateMachines: "State Machine 1",
   layout: new rive.Layout({
-    fit: rive.Fit.Cover,
+    fit: rive.Fit.Layout,
     alignment: rive.Alignment.Center,
   }),
   onLoad: async () => {
@@ -504,10 +504,10 @@ const r = new rive.Rive({
           vm.viewModel("propertyOfVocabControlVM").trigger("returnTriggerVocabPage").trigger();
           break;
         case 4:
-          vm.viewModel("propertyOfPatternVM").trigger("patternReturnTrigger").trigger();
+          vm.viewModel("propertyOfPatternControlVM").trigger("patternReturnTrigger").trigger();
           break;
         case 5:
-          vm.viewModel("propertyOfAlphabetVM").trigger("returnAlphaTrigger").trigger();
+          vm.viewModel("propertyOfAlphabetControlVM").trigger("returnAlphaTrigger").trigger();
           break;
         default:
           vm.trigger("exittrigger").trigger();
@@ -595,15 +595,34 @@ const r = new rive.Rive({
     });
 
     // pattern page triggers
-    const patternVM = vm.viewModel("propertyOfPatternVM");
-    patternVM.trigger("patternNextTrigger").on(() => {
+    const patternVM        = vm.viewModel("propertyOfPatternVM");
+    const patternControlVM = vm.viewModel("propertyOfPatternControlVM");
+
+
+    patternControlVM.trigger("patternNextTrigger").on(() => {
       const current = Math.round(patternVM.number("patternPageIdx").value);
-      patternVM.number("patternPageIdx").value = current + 1;
+      patternVM.number("patternPageIdx").value = Math.min(4, current + 1);
     });
-    patternVM.trigger("patternPrevTrigger").on(() => {
+    patternControlVM.trigger("patternPrevTrigger").on(() => {
       const current = Math.round(patternVM.number("patternPageIdx").value);
       patternVM.number("patternPageIdx").value = Math.max(0, current - 1);
     });
+
+    // Alpha page triggers
+    const AlphabetVM        = vm.viewModel("propertyOfAlphabetVM");
+    const AlphabetControlVM = vm.viewModel("propertyOfAlphabetControlVM");
+
+
+    AlphabetControlVM.trigger("nextalpatrigger").on(() => {
+      const current = Math.round(AlphabetVM.number("alphabetPage").value);
+      AlphabetVM.number("alphabetPage").value = Math.min(1, current + 1);
+    });
+    AlphabetControlVM.trigger("prevalpatrigger").on(() => {
+      const current = Math.round(AlphabetVM.number("alphabetPage").value);
+      AlphabetVM.number("alphabetPage").value = Math.max(0, current - 1);
+    });
+
+
 
     // set initial lesson
     goToLesson(0);
