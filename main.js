@@ -402,11 +402,13 @@ function poll() {
     previousAudio.currentTime = 0;
   }
 
-  if (stateNum === 0 && !homeSongPlayed) {
-    homeSongPlayed = true;
+if (stateNum === 0 && !homeSongPlayed) {
+  homeSongPlayed = true;
+  setTimeout(() => {
     currentAudio = new Audio("audio/cover_song64kbps.mp3");
     currentAudio.play().catch(err => console.warn("Home audio failed:", err));
-  }
+  }, 100);
+}
 
   if (stateNum === 6) {
     currentAudio = new Audio("audio/aiueo64kbps.mp3");
