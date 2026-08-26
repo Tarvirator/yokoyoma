@@ -155,6 +155,31 @@ function setCanvasSize() {
 setCanvasSize();
 
 
+
+// --- FIRST INTERACTION AUDIO ----------------------------------------
+let homeSongPlayed = false;
+
+const firstInteractionEvents = ["click", "keydown", "touchstart", "pointerdown"];
+
+firstInteractionEvents.forEach(event => {
+  canvas.addEventListener(event, playHomeAudioOnFirstInteraction);
+});
+
+function playHomeAudioOnFirstInteraction() {
+  if (homeSongPlayed) return;
+  homeSongPlayed = true;
+
+  console.log("first interaction — playing home audio");
+
+  firstInteractionEvents.forEach(event => {
+  canvas.removeEventListener(event, playHomeAudioOnFirstInteraction);
+});
+
+  currentAudio = new Audio("audio/cover_song64kbps.mp3");
+  currentAudio.play().catch(err => console.warn("Home audio failed:", err));
+}
+
+
 // --- LESSON TEXTS ---------------------------------------------------
 let lessonTexts = {};
 
@@ -384,7 +409,6 @@ function startVocab(langIdx) {
 let lastStateNum = -1;
 let lastLangIdx  = -1;
 let lastStartEnd = -1;
-let homeSongPlayed = false;
 
 function poll() {
   const vm = r.viewModelInstance;
@@ -401,14 +425,6 @@ function poll() {
     previousAudio.pause();
     previousAudio.currentTime = 0;
   }
-
-if (stateNum === 0 && !homeSongPlayed) {
-  homeSongPlayed = true;
-  setTimeout(() => {
-    currentAudio = new Audio("audio/cover_song64kbps.mp3");
-    currentAudio.play().catch(err => console.warn("Home audio failed:", err));
-  }, 100);
-}
 
   if (stateNum === 6) {
     currentAudio = new Audio("audio/aiueo64kbps.mp3");
