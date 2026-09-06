@@ -1,52 +1,9 @@
 //---- FILES -------------------------------
-const riveFile        = "yokoyoma-ch2_lesson.riv";
+const riveFile        = "yokoyoma-ch1.riv";
 const lessonTextFile  = "lesson_text.csv";
 const lessonStructFile= "lesson_structure_pos_updated.csv";
-const vocabTextFile   = "vocabulary.csv";
+const vocabTextFile   = "vocab.csv";
 const TOTAL_VOCAB     = 43;
-
-
-// --- LESSON AUDIO ---------------------------------------------------
-let currentAudio     = null; // currently playing Audio object
-let audioSequenceIdx = 0;    // which audio in the sequence we're on (0 = audio1, 1 = audio2...)
-
-function getLessonAudioSequence(lessonIdx) {
-  const data = LESSON_DATA[lessonIdx];
-  if (!data) return [];
-
-  // collect non-empty audio values in order
-  const seq = [];
-  for (let i = 1; i <= 7; i++) {
-    const a = data[`audio${i}`];
-    if (a && a.trim() !== "") seq.push(`audio/${a}.mp3`);
-  }
-  return seq;
-}
-
-function stopLessonAudio() {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    currentAudio = null;
-  }
-}
-
-function playNextLessonAudio() {
-  const seq = getLessonAudioSequence(currentLessonIdx);
-  if (seq.length === 0) return;
-
-  const path = seq[audioSequenceIdx % seq.length];
-  audioSequenceIdx++;
-
-  stopLessonAudio();
-  currentAudio = new Audio(path);
-  currentAudio.play().catch(err => console.warn("Audio play failed:", err));
-}
-
-function resetLessonAudio() {
-  stopLessonAudio();
-  audioSequenceIdx = 0;
-}
 
 // --- LESSON STRUCTURE -----------------------------------------------
 const SUBLESSONS     = [[5, 3], [9,3],[18,3],[31,2],[42,3],[51,4],[77,2],[94,3],[103,4],[139,3]];
@@ -123,10 +80,8 @@ function getPrevMainLesson(lessonIdx) {
 
 
 // --- REPEAT STRUCTURE -----------------------------------------------
-// List lessons that should NOT repeat — everything else repeats REPEAT_COUNT times
 const NO_REPEAT_LESSONS = new Set([9, 17, 22, 34, 61, 69, 80, 98, 125, 143]);
-
-const REPEAT_COUNT = 3;
+const REPEAT_COUNT      = 3;
 
 let repeatPlayCount   = 0;
 let activeRepeatGroup = null;
@@ -155,28 +110,82 @@ function setCanvasSize() {
 setCanvasSize();
 
 
+// --- AUDIO ----------------------------------------------------------
+// single reusable audio player — avoids mobile browser media element limits
+const audioPlayer    = new Audio();
+const audioPreloader = new Audio();
+
+function stopCurrentAudio() {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+}
+
+function playAudio(path) {
+  stopCurrentAudio();
+  audioPlayer.src = path;
+  audioPlayer.load();
+  audioPlayer.play().catch(err => console.warn("Audio play failed:", err));
+}
+
+function preloadAudio(path) {
+  if (!path) return;
+  audioPreloader.src = path;
+  audioPreloader.load();
+}
+
 
 // --- FIRST INTERACTION AUDIO ----------------------------------------
 let homeSongPlayed = false;
-
-const firstInteractionEvents = ["click", "keydown", "touchstart", "pointerdown"];
-
-firstInteractionEvents.forEach(event => {
-  canvas.addEventListener(event, playHomeAudioOnFirstInteraction);
-});
 
 function playHomeAudioOnFirstInteraction() {
   if (homeSongPlayed) return;
   homeSongPlayed = true;
 
-  console.log("first interaction — playing home audio");
-
   firstInteractionEvents.forEach(event => {
-  canvas.removeEventListener(event, playHomeAudioOnFirstInteraction);
+    canvas.removeEventListener(event, playHomeAudioOnFirstInteraction);
+  });
+
+  playAudio("audio/cover_song64kbps.mp3");
+}
+
+const firstInteractionEvents = ["click", "keydown", "touchstart", "pointerdown"];
+firstInteractionEvents.forEach(event => {
+  canvas.addEventListener(event, playHomeAudioOnFirstInteraction);
 });
 
-  currentAudio = new Audio("audio/cover_song64kbps.mp3");
-  currentAudio.play().catch(err => console.warn("Home audio failed:", err));
+
+// --- LESSON AUDIO ---------------------------------------------------
+let audioSequenceIdx = 0;
+
+function getLessonAudioSequence(lessonIdx) {
+  const data = LESSON_DATA[lessonIdx];
+  if (!data) return [];
+
+  const seq = [];
+  for (let i = 1; i <= 7; i++) {
+    const a = data[`audio${i}`];
+    if (a && a.trim() !== "") seq.push(`audio/${a}.mp3`);
+  }
+  return seq;
+}
+
+function playNextLessonAudio() {
+  const seq = getLessonAudioSequence(currentLessonIdx);
+  if (seq.length === 0) return;
+
+  const path = seq[audioSequenceIdx % seq.length];
+  audioSequenceIdx++;
+
+  playAudio(path);
+
+  // preload next in sequence
+  const nextPath = seq[audioSequenceIdx % seq.length];
+  if (nextPath !== path) preloadAudio(nextPath);
+}
+
+function resetLessonAudio() {
+  stopCurrentAudio();
+  audioSequenceIdx = 0;
 }
 
 
@@ -221,7 +230,11 @@ let currentLessonIdx = 0;
 function goToLesson(idx) {
   currentLessonIdx = Math.max(0, Math.min(idx, LESSON_COUNT - 1));
 
-  resetLessonAudio(); // stop previous audio, reset sequence
+  resetLessonAudio();
+
+  // preload first audio of new lesson
+  const seq = getLessonAudioSequence(currentLessonIdx);
+  if (seq.length > 0) preloadAudio(seq[0]);
 
   const vm = r.viewModelInstance;
   if (!vm) return;
@@ -249,7 +262,7 @@ function hardResetLesson(thenGoTo) {
   const vm = r.viewModelInstance;
   if (!vm) return;
 
-  resetLessonAudio(); // stop and reset audio sequence
+  resetLessonAudio();
 
   const lessonVM = vm.viewModel("propertyOfLessonVM");
   if (lessonVM) {
@@ -340,8 +353,8 @@ function startGame() {
 }
 
 function setCurrentQuestion(idx) {
-  const vm      = r.viewModelInstance;
-  const gameVM  = vm.viewModel("propertyOfGameVM");
+  const vm     = r.viewModelInstance;
+  const gameVM = vm.viewModel("propertyOfGameVM");
 
   const vocabIdx = audioList[idx];
   const slotIdx  = imageList.indexOf(vocabIdx);
@@ -349,14 +362,15 @@ function setCurrentQuestion(idx) {
   currentVocabIdx = vocabIdx;
   gameVM.number("current").value = slotIdx;
 
-  // play audio from JS after short delay
-  setTimeout(() => {
-    const audioFile = vocabTexts[vocabIdx]?.[3];
-    if (!audioFile) return;
-    stopLessonAudio();
-    currentAudio = new Audio(`audio/${audioFile}.mp3`);
-    currentAudio.play().catch(err => console.warn("Game audio play failed:", err));
-  }, 500);
+  const audioFile = vocabTexts[vocabIdx]?.[3];
+  if (audioFile) playAudio(`audio/${audioFile}.mp3`);
+
+  // preload next question's audio
+  const nextVocabIdx = audioList[idx + 1];
+  if (nextVocabIdx !== undefined) {
+    const nextFile = vocabTexts[nextVocabIdx]?.[3];
+    if (nextFile) preloadAudio(`audio/${nextFile}.mp3`);
+  }
 }
 
 
@@ -377,8 +391,7 @@ function setVocabPage(page) {
   const vocabVM = vm.viewModel("propertyOfVocabularyVM");
   const langIdx = Math.round(vm.number("languageIdx").value);
 
-  // stop any playing audio on page change
-  stopLessonAudio();
+  stopCurrentAudio();
   lastVocabCardClicked = -1;
 
   const startIdx = vocabPage * CARD_COUNT;
@@ -418,21 +431,14 @@ function poll() {
     const langIdx   = Math.round(vm.number("languageIdx").value);
 
     // detect state transitions
-  if (stateNum !== lastStateNum) {
-  const previousAudio = currentAudio;
-  currentAudio = null;
-  if (previousAudio) {
-    previousAudio.pause();
-    previousAudio.currentTime = 0;
-  }
+    if (stateNum !== lastStateNum) {
+      stopCurrentAudio();
 
-  if (stateNum === 6) {
-    currentAudio = new Audio("audio/aiueo64kbps.mp3");
-    currentAudio.play().catch(err => console.warn("State 6 audio failed:", err));
-  }
+      if (stateNum === 6) {
+        playAudio("audio/aiueo64kbps.mp3");
+      }
 
-  // ... rest of transition logic
-
+      // leaving lesson
       if (lastStateNum === 1) {
         if (stateNum === 0) {
           hardResetLesson(0);
@@ -448,7 +454,6 @@ function poll() {
         if (lastState === 0) {
           hardResetLesson(0);
         }
-        // from any other state → resume at currentLessonIdx
       }
 
       if (stateNum === 2) startGame();
@@ -532,9 +537,6 @@ function poll() {
       const vocabVM = vm.viewModel("propertyOfVocabularyVM");
       if (!vocabVM) { requestAnimationFrame(poll); return; }
 
-      const audioVM = vocabVM.viewModel("propertyOfVocabAudioVM");
-      if (!audioVM) { requestAnimationFrame(poll); return; }
-
       if (langIdx !== lastVocabLangIdx) {
         lastVocabLangIdx = langIdx;
         setVocabTexts(langIdx);
@@ -556,7 +558,7 @@ const r = new rive.Rive({
   artboard: "Artboard",
   stateMachines: "State Machine 1",
   layout: new rive.Layout({
-    fit: rive.Fit.Layout,
+    fit: rive.Fit.Cover,
     alignment: rive.Alignment.Center,
   }),
   onLoad: async () => {
@@ -571,41 +573,34 @@ const r = new rive.Rive({
 
     const vm = r.viewModelInstance;
 
-    // ── ESC key → exittrigger ──────────────────────────────────────
-   window.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
+    // ── ESC key handler ──────────────────────────────────────────────
+    window.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
 
-    const stateNum  = Math.round(parseFloat(vm.string("stateNum").value));
-    const lastState = Math.round(vm.number("lastState").value);
+      const stateNum  = Math.round(parseFloat(vm.string("stateNum").value));
+      const lastState = Math.round(vm.number("lastState").value);
 
-    if (lastState !== 1) {
-      // not coming from lesson — just exit
-      vm.trigger("exittrigger").trigger();
-    } else {
-      // coming from lesson — trigger mode-specific return
-      switch (stateNum) {
-        case 2:
-          vm.viewModel("propertyOfGameControlVM").trigger("returnTriggerGame").trigger();
-          break;
-        case 3:
-          vm.viewModel("propertyOfVocabControlVM").trigger("returnTriggerVocabPage").trigger();
-          break;
-        case 4:
-          vm.viewModel("propertyOfPatternControlVM").trigger("patternReturnTrigger").trigger();
-          break;
-        case 5:
-          vm.viewModel("propertyOfAlphabetControlVM").trigger("returnAlphaTrigger").trigger();
-          break;
-        default:
-          vm.trigger("exittrigger").trigger();
-          break;
+      if (lastState !== 1) {
+        vm.trigger("exittrigger").trigger();
+      } else {
+        switch (stateNum) {
+          case 2:
+            vm.viewModel("propertyOfGameControlVM").trigger("returnTriggerGame").trigger();
+            break;
+          case 3:
+            vm.viewModel("propertyOfVocabControlVM").trigger("returnTriggerVocabPage").trigger();
+            break;
+          case 4:
+            vm.viewModel("propertyOfPatternControlVM").trigger("patternReturnTrigger").trigger();
+            break;
+          case 5:
+            vm.viewModel("propertyOfAlphabetControlVM").trigger("returnAlphaTrigger").trigger();
+            break;
+          default:
+            vm.trigger("exittrigger").trigger();
+            break;
+        }
       }
-    }
-  });
-    // Lesson Trigger
-    const lessonVM = vm.viewModel("propertyOfLessonVM");
-    lessonVM.trigger("audioPlayTrigger").on(() => {
-      playNextLessonAudio();
     });
 
     // media player triggers
@@ -636,13 +631,18 @@ const r = new rive.Rive({
       lastStartEnd = -1;
       hardResetLesson(currentLessonIdx);
     });
-
     mediaPlayerVM.trigger("playPauseTrigger").on(() => {
-      if (currentAudio && !currentAudio.paused) {
-        currentAudio.pause();
-      } else if (currentAudio) {
-        currentAudio.play().catch(err => console.warn("Play failed:", err));
+      if (!audioPlayer.paused) {
+        audioPlayer.pause();
+      } else {
+        audioPlayer.play().catch(err => console.warn("Play failed:", err));
       }
+    });
+
+    // lesson audio trigger
+    const lessonVM = vm.viewModel("propertyOfLessonVM");
+    lessonVM.trigger("audioPlayTrigger").on(() => {
+      playNextLessonAudio();
     });
 
     // game triggers
@@ -653,18 +653,16 @@ const r = new rive.Rive({
 
     let listenAgainDebounce = false;
     gameControlVM.trigger("listenAgainTrigger").on(() => {
-    if (listenAgainDebounce) return;
-    if (currentVocabIdx === -1) return;
+      if (listenAgainDebounce) return;
+      if (currentVocabIdx === -1) return;
 
-    listenAgainDebounce = true;
-    setTimeout(() => listenAgainDebounce = false, 300);
+      listenAgainDebounce = true;
+      setTimeout(() => listenAgainDebounce = false, 300);
 
-    const audioFile = vocabTexts[currentVocabIdx]?.[3];
-    if (!audioFile) return;
-    stopLessonAudio();
-    currentAudio = new Audio(`audio/${audioFile}.mp3`);
-    currentAudio.play().catch(err => console.warn("Listen again audio play failed:", err));
-  });
+      const audioFile = vocabTexts[currentVocabIdx]?.[3];
+      if (!audioFile) return;
+      playAudio(`audio/${audioFile}.mp3`);
+    });
 
     // vocab page triggers
     const vocabControlVM = vm.viewModel("propertyOfVocabControlVM");
@@ -676,40 +674,26 @@ const r = new rive.Rive({
     });
 
     // vocab card trigger
-    const vocabVM      = vm.viewModel("propertyOfVocabularyVM");
+    const vocabVM = vm.viewModel("propertyOfVocabularyVM");
 
     let cardTriggerDebounce = false;
     vocabVM.trigger("cardTrigger").on(() => {
-      console.log("triggered")
       if (cardTriggerDebounce) return;
       cardTriggerDebounce = true;
       setTimeout(() => cardTriggerDebounce = false, 300);
 
-      const cardClicked   = Math.round(vocabVM.number("VocabCardClicked").value);
-      // const actualCardIdx = vocabPage * CARD_COUNT + cardClicked;
+      const cardClicked = Math.round(vocabVM.number("VocabCardClicked").value);
+      const vocabIdx    = Math.round(vocabVM.number(`card${cardClicked}`).value);
+      if (vocabIdx < 0) return;
 
-      // get the vocabIdx assigned to this slot
-      const vocabIdx = Math.round(vocabVM.number(`card${cardClicked}`).value);
-      if (vocabIdx < 0) return; // sentinel or empty slot
-
-      // get audio filename from vocabTexts[vocabIdx][3] (fr column = audio name)
       const audioFile = vocabTexts[vocabIdx]?.[3];
       if (!audioFile) return;
-
-      // stop any playing audio and play new one
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-      currentAudio = new Audio(`audio/${audioFile}.mp3`);
-      currentAudio.play().catch(err => console.warn("Vocab audio play failed:", err));
+      playAudio(`audio/${audioFile}.mp3`);
     });
 
-    // pattern page triggers
+    // pattern triggers
     const patternVM        = vm.viewModel("propertyOfPatternVM");
     const patternControlVM = vm.viewModel("propertyOfPatternControlVM");
-
-
     patternControlVM.trigger("patternNextTrigger").on(() => {
       const current = Math.round(patternVM.number("patternPageIdx").value);
       patternVM.number("patternPageIdx").value = Math.min(4, current + 1);
@@ -718,22 +702,6 @@ const r = new rive.Rive({
       const current = Math.round(patternVM.number("patternPageIdx").value);
       patternVM.number("patternPageIdx").value = Math.max(0, current - 1);
     });
-
-    // Alpha page triggers
-    const AlphabetVM        = vm.viewModel("propertyOfAlphabetVM");
-    const AlphabetControlVM = vm.viewModel("propertyOfAlphabetControlVM");
-
-
-    AlphabetControlVM.trigger("nextalpatrigger").on(() => {
-      const current = Math.round(AlphabetVM.number("alphabetPage").value);
-      AlphabetVM.number("alphabetPage").value = Math.min(1, current + 1);
-    });
-    AlphabetControlVM.trigger("prevalpatrigger").on(() => {
-      const current = Math.round(AlphabetVM.number("alphabetPage").value);
-      AlphabetVM.number("alphabetPage").value = Math.max(0, current - 1);
-    });
-
-
 
     // set initial lesson
     goToLesson(0);
