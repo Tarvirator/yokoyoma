@@ -1,13 +1,13 @@
 //---- FILES -------------------------------
-const riveFile        = "yokoyoma-ch1.riv";
+const riveFile        = "yokoyoma-ch2_lesson.riv";
 const lessonTextFile  = "lesson_text.csv";
 const lessonStructFile= "lesson_structure_pos_updated.csv";
-const vocabTextFile   = "vocab.csv";
+const vocabTextFile   = "vocabulary.csv";
 const TOTAL_VOCAB     = 43;
 
 // --- LESSON STRUCTURE -----------------------------------------------
-const SUBLESSONS     = [[5, 3], [9,3],[18,3],[31,2],[42,3],[51,4],[77,2],[94,3],[103,4],[139,3]];
-const CHAPTER_STARTS = [0, 4, 5,9,13,17,18,22,26,30,31,34,37,41,42,46,51,56,63,67,68,69,72,76,
+const SUBLESSONS     = [[5, 3],[9,3],[18,3],[31,2],[42,3],[51,4],[77,2],[94,3],[103,4],[139,3]];
+const CHAPTER_STARTS = [0,4,5,9,13,17,18,22,26,30,31,34,37,41,42,46,51,56,63,67,68,69,72,76,
   77,80,83,89,93,94,98,103,108,113,117,121,122,125,130,134,135,136,137,138,139,143,144,147];
 
 let LESSON_COUNT = 0;
@@ -111,17 +111,17 @@ setCanvasSize();
 
 
 // --- AUDIO ----------------------------------------------------------
-// single reusable audio player — avoids mobile browser media element limits
+// single reusable audio players — avoids mobile browser media element limits
 const audioPlayer    = new Audio();
 const audioPreloader = new Audio();
 
-function stopCurrentAudio() {
+function stopLessonAudio() {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
 }
 
 function playAudio(path) {
-  stopCurrentAudio();
+  stopLessonAudio();
   audioPlayer.src = path;
   audioPlayer.load();
   audioPlayer.play().catch(err => console.warn("Audio play failed:", err));
@@ -184,7 +184,7 @@ function playNextLessonAudio() {
 }
 
 function resetLessonAudio() {
-  stopCurrentAudio();
+  stopLessonAudio();
   audioSequenceIdx = 0;
 }
 
@@ -391,7 +391,7 @@ function setVocabPage(page) {
   const vocabVM = vm.viewModel("propertyOfVocabularyVM");
   const langIdx = Math.round(vm.number("languageIdx").value);
 
-  stopCurrentAudio();
+  stopLessonAudio();
   lastVocabCardClicked = -1;
 
   const startIdx = vocabPage * CARD_COUNT;
@@ -432,7 +432,7 @@ function poll() {
 
     // detect state transitions
     if (stateNum !== lastStateNum) {
-      stopCurrentAudio();
+      stopLessonAudio();
 
       if (stateNum === 6) {
         playAudio("audio/aiueo64kbps.mp3");
@@ -558,7 +558,7 @@ const r = new rive.Rive({
   artboard: "Artboard",
   stateMachines: "State Machine 1",
   layout: new rive.Layout({
-    fit: rive.Fit.Cover,
+    fit: rive.Fit.Layout,
     alignment: rive.Alignment.Center,
   }),
   onLoad: async () => {
