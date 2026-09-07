@@ -1,9 +1,9 @@
 //---- FILES -------------------------------
-const riveFile        = "yokoyoma-ch2_lesson.riv";
-const lessonTextFile  = "lesson_text.csv";
-const lessonStructFile= "lesson_structure_pos_updated.csv";
-const vocabTextFile   = "vocabulary.csv";
-const TOTAL_VOCAB     = 43;
+const riveFile = "yokoyoma-ch2_lesson.riv";
+const lessonTextFile = "lesson_text.csv";
+const lessonStructFile = "lesson_structure_pos_updated.csv";
+const vocabTextFile = "vocabulary.csv";
+const TOTAL_VOCAB = 43;
 
 
 // --- AUDIO SYSTEM ----------------------------------------------------
@@ -34,7 +34,7 @@ function stopLessonAudio() {
 
   try {
     audioPlayer.currentTime = 0;
-  } catch (_) {}
+  } catch (_) { }
 
   // Do not clear src here. Keeping the media element/source alive is
   // important for mobile browsers.
@@ -113,7 +113,7 @@ async function playAudio(path) {
 
     try {
       audioPlayer.currentTime = 0;
-    } catch (_) {}
+    } catch (_) { }
 
     // Only change/load the source when it is actually different.
     if (currentAudioPath !== path) {
@@ -245,7 +245,7 @@ const CHAPTER_STARTS = [
 ];
 
 let LESSON_COUNT = 0;
-let LESSON_DATA  = {};
+let LESSON_DATA = {};
 
 async function loadLessonStructure() {
   const res = await fetch(lessonStructFile);
@@ -255,20 +255,20 @@ async function loadLessonStructure() {
 
   rows.forEach(row => {
     const cols = row.replace(/\r/g, "").split(",");
-    const idx  = parseInt(cols[0]);
+    const idx = parseInt(cols[0]);
 
     LESSON_DATA[idx] = {
-      type  : parseInt(cols[1]) || 0,
+      type: parseInt(cols[1]) || 0,
 
-      audio1: (cols[2]  ?? "").trim(),
-      audio2: (cols[3]  ?? "").trim(),
-      audio3: (cols[4]  ?? "").trim(),
-      audio4: (cols[5]  ?? "").trim(),
-      audio5: (cols[6]  ?? "").trim(),
-      audio6: (cols[7]  ?? "").trim(),
-      audio7: (cols[8]  ?? "").trim(),
+      audio1: (cols[2] ?? "").trim(),
+      audio2: (cols[3] ?? "").trim(),
+      audio3: (cols[4] ?? "").trim(),
+      audio4: (cols[5] ?? "").trim(),
+      audio5: (cols[6] ?? "").trim(),
+      audio6: (cols[7] ?? "").trim(),
+      audio7: (cols[8] ?? "").trim(),
 
-      vocab1: parseInt(cols[9])  || 0,
+      vocab1: parseInt(cols[9]) || 0,
       vocab2: parseInt(cols[10]) || 0,
       vocab3: parseInt(cols[11]) || 0,
       vocab4: parseInt(cols[12]) || 0,
@@ -344,7 +344,7 @@ const NO_REPEAT_LESSONS = new Set([
 
 const REPEAT_COUNT = 3;
 
-let repeatPlayCount   = 0;
+let repeatPlayCount = 0;
 let activeRepeatGroup = null;
 
 function getRepeatGroup(lessonIdx) {
@@ -356,7 +356,7 @@ function getRepeatGroup(lessonIdx) {
 }
 
 function resetRepeat() {
-  repeatPlayCount   = 0;
+  repeatPlayCount = 0;
   activeRepeatGroup = null;
 }
 
@@ -368,7 +368,7 @@ function setCanvasSize() {
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
 
-  canvas.width  = Math.round(rect.width * dpr);
+  canvas.width = Math.round(rect.width * dpr);
   canvas.height = Math.round(rect.height * dpr);
 }
 
@@ -691,9 +691,9 @@ function setVocabTexts(langIdx) {
 // --- GAME LOGIC ------------------------------------------------------
 const SLOT_COUNT = 9;
 
-let imageList       = [];
-let audioList       = [];
-let lastCorrect     = -1;
+let imageList = [];
+let audioList = [];
+let lastCorrect = -1;
 let currentVocabIdx = -1;
 
 function shuffle(arr) {
@@ -725,7 +725,7 @@ function startGame() {
 
   gameVM.number("correct").value = 0;
 
-  lastCorrect     = -1;
+  lastCorrect = -1;
   currentVocabIdx = -1;
 
   imageList.forEach(
@@ -779,11 +779,11 @@ function setCurrentQuestion(idx) {
 
 // --- VOCAB CARD LOGIC ------------------------------------------------
 const CARD_COUNT = 12;
-const SENTINEL   = -99;
+const SENTINEL = -99;
 
-let vocabPage            = 0;
+let vocabPage = 0;
 let lastVocabCardClicked = -1;
-let lastVocabLangIdx     = -1;
+let lastVocabLangIdx = -1;
 
 const totalPages =
   Math.ceil(
@@ -863,7 +863,7 @@ function setVocabPage(page) {
 
 function startVocab(langIdx) {
   lastVocabCardClicked = -1;
-  lastVocabLangIdx     = langIdx;
+  lastVocabLangIdx = langIdx;
 
   setVocabPage(0);
 }
@@ -871,7 +871,7 @@ function startVocab(langIdx) {
 
 // --- POLLING LOOP ---------------------------------------------------
 let lastStateNum = -1;
-let lastLangIdx  = -1;
+let lastLangIdx = -1;
 let lastStartEnd = -1;
 
 function poll() {
@@ -979,7 +979,7 @@ function poll() {
 
         const texts =
           lessonTexts[
-            currentLessonIdx
+          currentLessonIdx
           ]?.[langIdx];
 
         if (texts) {
@@ -1026,7 +1026,7 @@ function poll() {
         startEnd === 1 &&
         lastStartEnd === 0 &&
         currentLessonIdx <
-          LESSON_COUNT - 1
+        LESSON_COUNT - 1
       ) {
 
         const group =
@@ -1043,7 +1043,7 @@ function poll() {
           ) {
 
             activeRepeatGroup = group;
-            repeatPlayCount   = 1;
+            repeatPlayCount = 1;
           }
 
 
@@ -1540,7 +1540,7 @@ const r = new rive.Rive({
 
       const audioFile =
         vocabTexts[
-          currentVocabIdx
+        currentVocabIdx
         ]?.[3];
 
 
@@ -1585,7 +1585,7 @@ const r = new rive.Rive({
     });
 
 
-        // vocab card trigger
+    // vocab card trigger
     const vocabVM =
       vm.viewModel(
         "propertyOfVocabularyVM"
@@ -1649,7 +1649,7 @@ const r = new rive.Rive({
       // (fr column = audio name)
       const audioFile =
         vocabTexts[
-          vocabIdx
+        vocabIdx
         ]?.[3];
 
 
