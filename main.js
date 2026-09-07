@@ -586,47 +586,38 @@ function goToLesson(idx) {
 let lessonResetTimer = null;
 let lessonResetToken = 0;
 
+let lessonResetting = false;
+
 function hardResetLesson(thenGoTo = 0) {
   const vm = r.viewModelInstance;
   if (!vm) return;
 
-  // Invalidate any previous pending reset.
-  lessonResetToken++;
+  lessonResetting = true;
 
-  const resetToken = lessonResetToken;
-
-  if (lessonResetTimer !== null) {
-    clearTimeout(lessonResetTimer);
-    lessonResetTimer = null;
-  }
-
-  // Reset all JS-side lesson state immediately.
   currentLessonIdx = 0;
-
   lastStartEnd = -1;
   lastLangIdx = -1;
-
-  resetLessonAudio();
   resetRepeat();
+  resetLessonAudio();
 
   const lessonVM = vm.viewModel("propertyOfLessonVM");
 
   if (lessonVM) {
-    // Force Rive to recognize this as a fresh lesson session.
     lessonVM.number("lessonIdx").value = -100;
     lessonVM.number("lessonType").value = -100;
   }
 
-  // Give Rive one tick to process the sentinel values,
-  // then put lesson 0 back.
-  lessonResetTimer = setTimeout(() => {
-    lessonResetTimer = null;
-
-    // Ignore an old reset if another reset happened meanwhile.
-    if (resetToken !== lessonResetToken) return;
+  // Give Rive one frame to process the reset,
+  // then load lesson 0.
+  requestAnimationFrame(() => {
+    if (!r.viewModelInstance) return;
 
     goToLesson(thenGoTo);
-  }, 50);
+
+    requestAnimationFrame(() => {
+      lessonResetting = false;
+    });
+  });
 }
 
 function resetLesson() {
@@ -922,23 +913,16 @@ function poll() {
 
 
       if (lastStateNum === 1) {
-
         if (stateNum === 0) {
+          resetLessonAudio();
 
-          hardResetLesson(0);
-
-        } else {
-
-          const lessonVM =
-            vm.viewModel(
-              "propertyOfLessonVM"
-            );
-
+          const lessonVM = vm.viewModel("propertyOfLessonVM");
           if (lessonVM) {
-            lessonVM.number(
-              "lessonIdx"
-            ).value = -1;
+            lessonVM.number("lessonIdx").value = -1;
           }
+        } else {
+          const lessonVM = vm.viewModel("propertyOfLessonVM");
+          if (lessonVM) lessonVM.number("lessonIdx").value = -1;
         }
 
         lastLangIdx = -1;
@@ -989,7 +973,7 @@ function poll() {
 
 
     // lesson logic
-    if (stateNum === 1) {
+    if (stateNum === 1 && !lessonResetting) {
 
       if (langIdx !== lastLangIdx) {
 
