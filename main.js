@@ -389,8 +389,44 @@ const firstInteractionEvents = [
 function playHomeAudioOnFirstInteraction() {
   if (audioUnlocked) return;
 
-  // Do not remove the listeners until unlock succeeds. If Safari rejects
-  // one event, a later genuine interaction can try again.
+  const vm = r.viewModelInstance;
+
+  // If Rive is already loaded, check the current state.
+  // Only play the cover song from the homepage.
+  if (vm) {
+    const stateNum = Math.round(
+      parseFloat(
+        vm.string("stateNum").value
+      )
+    );
+
+    // Homepage is state 0.
+    if (stateNum !== 0) {
+      console.log(
+        "First interaction was outside homepage — skipping cover song."
+      );
+
+      // We still consider the interaction as handled so the cover
+      // song won't suddenly start later.
+      audioUnlocked = true;
+
+      firstInteractionEvents.forEach(event => {
+        canvas.removeEventListener(
+          event,
+          playHomeAudioOnFirstInteraction
+        );
+
+        document.removeEventListener(
+          event,
+          playHomeAudioOnFirstInteraction
+        );
+      });
+
+      return;
+    }
+  }
+
+  // We are on the homepage, so unlock + play the cover song.
   unlockAudio().then(success => {
     if (!success) return;
 
@@ -545,36 +581,66 @@ function goToLesson(idx) {
   }
 }
 
-function hardResetLesson(thenGoTo) {
-  const vm = r.viewModelInstance;
+// --- LESSON RESET -----------------------------------------------------
 
+let lessonResetTimer = null;
+let lessonResetToken = 0;
+
+function hardResetLesson(thenGoTo = 0) {
+  const vm = r.viewModelInstance;
   if (!vm) return;
 
-  resetLessonAudio();
+  // Invalidate any previous pending reset.
+  lessonResetToken++;
 
-  const lessonVM =
-    vm.viewModel("propertyOfLessonVM");
+  const resetToken = lessonResetToken;
+
+  if (lessonResetTimer !== null) {
+    clearTimeout(lessonResetTimer);
+    lessonResetTimer = null;
+  }
+
+  // Reset all JS-side lesson state immediately.
+  currentLessonIdx = 0;
+
+  lastStartEnd = -1;
+  lastLangIdx = -1;
+
+  resetLessonAudio();
+  resetRepeat();
+
+  const lessonVM = vm.viewModel("propertyOfLessonVM");
 
   if (lessonVM) {
+    // Force Rive to recognize this as a fresh lesson session.
     lessonVM.number("lessonIdx").value = -100;
     lessonVM.number("lessonType").value = -100;
   }
 
-  lastStartEnd = -1;
-  lastLangIdx  = -1;
+  // Give Rive one tick to process the sentinel values,
+  // then put lesson 0 back.
+  lessonResetTimer = setTimeout(() => {
+    lessonResetTimer = null;
 
-  resetRepeat();
+    // Ignore an old reset if another reset happened meanwhile.
+    if (resetToken !== lessonResetToken) return;
 
-  setTimeout(
-    () => goToLesson(thenGoTo),
-    50
-  );
+    goToLesson(thenGoTo);
+  }, 50);
 }
 
 function resetLesson() {
+  lessonResetToken++;
+
+  if (lessonResetTimer !== null) {
+    clearTimeout(lessonResetTimer);
+    lessonResetTimer = null;
+  }
+
   currentLessonIdx = 0;
-  lastStartEnd     = -1;
-  lastLangIdx      = -1;
+
+  lastStartEnd = -1;
+  lastLangIdx = -1;
 
   resetLessonAudio();
   resetRepeat();
